@@ -1,59 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!doctype html>
 <html>
-<head>
-  <title>NLP Interchange Format (NIF) - 2.0 Release Candidate</title>
-  <link href="http://www.w3.org/StyleSheets/TR/base" rel="stylesheet" type="text/css" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <head>
+  <meta charset="utf-8">
+  <title>NLP Interchange Format (NIF) 2.0 - Web Service Access Specification</title>
+  <meta name="author" content="Sebastian Hellmann">
+  <link rel="stylesheet" href="css/main.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
 </head>
-<body bgcolor="#FFFFFF">
-<p>
-<!--a href="/"><img border="0" alt="W3C" src="/Icons/w3c_home" /></a--> 
-</p>
-    <h1>NLP Interchange Format (NIF) - 2.0 Release Candidate</h1>
+ <body>
+   <ol class="nav lang">
+     <li></li>
+   </ol>
+   <ol class="nav">
+     <li><a href="/nlp2rdf/specification/api.html">current</a></li>
+     <li><a href="/nlp2rdf/specification/api/api-0.0.0.html">0.0.0</a></li>
+   </ol>
+   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>Web Service Access Specification, Version 0.0.0</h1>
+<h2>Summary</h2>
+<p>This document defines parameters for NIF web services.</p>
 
-<p>This document contains NLP Interchange Format (NIF) specification 2.0 </br>
-The document will change frequently until it is finished.
-All previous versions can be found here: https://github.com/NLP2RDF/persistence.uni-leipzig.org/commits/master/spec/2.0.html
-Please see the <a href="http://persistence.uni-leipzig.org/nlp2rdf/">NIF/NLP2RDF Overview page</a> for more documentation</p>
-<hr />
+<h2>License, Persistence, Versioning and Resource List</h2>
+We provide a <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">document</a> explaining the process and further meta-level information.
 
-<h2>Introduction</h2>
-<p>Currently, these resources document the state of NIF 2.0 Release Candidate:
+<h2>How to attribute NIF?</h2>
+If you refer to NIF in an academic context, please cite the recent paper published at the ISWC in Use track 2013:
 <ul>
-	<li>This paper: <a href="http://svn.aksw.org/papers/2013/ISWC_NIF/public.pdf" target="_blank">Integrating NLP using Linked Data</a>. Sebastian Hellmann, Jens Lehmann, Sören Auer, and Martin Brümmer. <strong>Submitted</strong> to ISWC (2013)</li>
-	<li>Several sections in the soon-to-be W3C Standard:
-	<ul>
-		<li> <a href="http://www.w3.org/TR/its20/#conversion-to-nif" target="_blank">http://www.w3.org/TR/its20/#conversion-to-nif</a></li>
-		<li> <a href="http://www.w3.org/TR/its20/#nif-backconversion" target="_blank">http://www.w3.org/TR/its20/#nif-backconversion</a></li>
-	</ul>
-	</li>
-	<li>The NIF-Core Ontology: <a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#" >http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#</a></li>
-	<li>RLOG - an RDF Logging Ontology: <a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#" >http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#</a></li>
-	<li>The NIF Validator software:
-		<ul>
-			<li><a href="https://github.com/NLP2RDF/java-maven/raw/master/validate.jar">Download validate.jar</a></li>
-			<li><a href="https://github.com/NLP2RDF/java-maven/blob/master/README.md#nif-validator">Readme</a></li>
-		
-		</ul>
-	</li>
-	<li>A description of parameters below</li>
-
-
+	<li><a href="http://svn.aksw.org/papers/2013/ISWC_NIF/public.pdf" target="_blank">Integrating NLP using Linked Data</a>. Sebastian Hellmann, Jens Lehmann, Sören Auer, and Martin Brümmer. 12th International Semantic Web Conference, 21-25 October 2013, Sydney, Australia, (2013)</li>
 </ul>
+We try to maintain an up-to-date page for <a href="http://nlp2rdf.org/publications">NIF-related scientific publications</a> as well as a page for <a href="http://nlp2rdf.org/acknowledgements">acknowledgements</a> to the large community of contributors.
+
+
+<h2>Parameters</h2>
+	<xmp>@prefix rlog: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#> .</xmp>
 	
-</p>
-
-
-<h3>Parameters</h3>
-	<table border=1>
-		<thead>
+	<table border=1 >
 			<tr>
 				<th>Parameters</th>
 				<th>Description</th>
 			</tr>                        
-		</thead>
-		<tbody>
 			<tr>
 				<td>
 					<strong>informat</strong>
@@ -62,12 +46,11 @@ Please see the <a href="http://persistence.uni-leipzig.org/nlp2rdf/">NIF/NLP2RDF
 				<td>
 					Determines in which format the input is given. Can be "text", "turtle", "rdfxml", "ntriples", "json", "html", "pdf" and much more. </br>
 					<strong>"informat=text", "informat=turtle", "informat=rdfxml"</strong> must be implemented. If an unknown or not implemented "informat" is given, the following error has to be returned:</br>
-					<xmp>@prefix rlog: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#> .
-mylog:urn-xxx-yyy-zzz 
+					<pre>mylog:urn-xxx-yyy-zzz 
 	a rlog:Entry ;
 	rlog:level rlog:ERROR ;
 	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message "Parameter 'informat=html' not implemented. " . </xmp> 
+	rlog:message "Parameter 'informat=html' not implemented. " . </pre> 
 				</td>
 			</tr>
 			<tr>
@@ -77,12 +60,13 @@ mylog:urn-xxx-yyy-zzz
 				</td>
 				<td>
 					Determines how the input is accessed or retrieved. Can be "direct", "url", "file".  Webservices must implement "intype=direct" (e.g. via POST) and "intype=url", CLI must implement "intype=file" as well and access files with relative path names. <strong>It remains open how to implement 'direct' in a good way for CLI, maybe URL percent encoding as well? </strong>If an unknown or not implemented intype is given, the following error has to be returned:</br>
-					<xmp>mylog:urn-xxx-yyy-zzz 
+					<pre>mylog:urn-xxx-yyy-zzz 
 	a rlog:Entry ;
 	rlog:level rlog:ERROR ;
 	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message "Parameter 'intype=whatever' not implemented. " . </xmp> 
+	rlog:message "Parameter 'intype=whatever' not implemented. " . </pre> 
 				</td>
+			</tr>
 			<tr>
 				<td>
 					<strong>input</strong>
@@ -90,11 +74,12 @@ mylog:urn-xxx-yyy-zzz
 				</td>
 				<td>
 					Determines the input in accordance with the intype and informat parameter. </br>
-				<xmp>mylog:urn-xxx-yyy-zzz 
+				<pre>mylog:urn-xxx-yyy-zzz 
 	a rlog:Entry ;
 	rlog:level rlog:ERROR ;
 	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message "Parameter 'input=This%20is%20a%20sentence.' is not a valid url, but 'intype=url' was given. " . </xmp> 
+	rlog:message """Parameter 'input=This%20is%20a%20sentence.' 
+		is not a valid url, but 'intype=url' was given. """ . </pre> 
 				</td>
 			</tr>
 			<tr>
@@ -105,11 +90,12 @@ mylog:urn-xxx-yyy-zzz
 				<td>
 					Determines the urischeme to be used. Must be the full URI of the scheme of the OWL class. In case the namespace is "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#" it can be omitted for brevity.
 					Allowed values: "RFC5147String", "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#RFC5147String", etc. </br>
-					<xmp>mylog:urn-xxx-yyy-zzz 
+					<pre>mylog:urn-xxx-yyy-zzz 
 	a rlog:Entry ;
 	rlog:level rlog:ERROR ;
 	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message "Parameter 'urischeme=RFC7415String' does not exist, did you mean RFC5147String?" . </xmp> 
+	rlog:message """Parameter 'urischeme=RFC7415String' 
+		does not exist, did you mean RFC5147String?""" . </pre> 
 				</td>
 			</tr>
 			<tr>
@@ -139,9 +125,18 @@ mylog:urn-xxx-yyy-zzz
 					debug = "true" | "false" This options determines, if additional debug messages and errors should be written within the RDF.
 				</td>
 			</tr>
-		</tbody>
 	</table>
 
+<h2>About</h2>
+<p>This document is authored by <a href="http://bis.informatik.uni-leipzig.de/SebastianHellmann">Sebastian Hellman</a> from the AKSW research group.</p>
 
-</body>
+<p>If you'd like to leave feedback, please <a href="https://github.com/NLP2RDF/specification/issues">open an issue on
+GitHub</a> or send an email to the <a href="http://lists.informatik.uni-leipzig.de/mailman/listinfo/nlp2rdf">mailing list</a></p>
+
+<h2>License</h2>
+<p>Creative Commons - CC BY 3.0
+http://creativecommons.org/licenses/by/3.0/ - The page design is taken from http://semver.org</p>
+
+ </body>
 </html>
+
