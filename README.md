@@ -1,4 +1,4 @@
-spec
-====
+specifications
+==============
 
-Specifications
+Specifications for NIF 2.0
