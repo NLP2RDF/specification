@@ -29,9 +29,24 @@ If you refer to NIF in an academic context, please cite the recent paper publish
 </ul>
 We try to maintain an up-to-date page for <a href="http://nlp2rdf.org/publications">NIF-related scientific publications</a> as well as a page for <a href="http://nlp2rdf.org/acknowledgements">acknowledgements</a> to the large community of contributors.
 
+<h2>Error messages</h2>
+<xmp>@prefix rlog: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#> .</xmp>
+mylog:urn-xxx-yyy-zzz 
+	a rlog:Entry ;
+	rlog:level rlog:ERROR ;
+	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
+	rlog:message "Parameter 'informat=html' not implemented. " . </pre> 
+
+<pre><http://nlp2rdf.lod2.eu/instance/log/id_ERROR_10_1377124272902>
+        a              rlog:Entry ;
+        rlog:date      "22:31:12.902"^^xsd:dateTime ;
+        rlog:level     rlog:ERROR ;
+        rlog:message   "rdf:type of http://example.com/error6.html#char=0,27 is misspelled: http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#RFC147String" ;
+        rlog:resource  <http://example.com/error6.html#char=0,27> .</pre> 
+
 
 <h2>Parameters</h2>
-	<xmp>@prefix rlog: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#> .</xmp>
+	
 	
 	<table border=1 >
 			<tr>
@@ -46,11 +61,7 @@ We try to maintain an up-to-date page for <a href="http://nlp2rdf.org/publicatio
 				<td>
 					Determines in which format the input is given. Can be "text", "turtle", "rdfxml", "ntriples", "json", "html", "pdf" and much more. </br>
 					<strong>"informat=text", "informat=turtle", "informat=rdfxml"</strong> must be implemented. If an unknown or not implemented "informat" is given, the following error has to be returned:</br>
-					<pre>mylog:urn-xxx-yyy-zzz 
-	a rlog:Entry ;
-	rlog:level rlog:ERROR ;
-	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message "Parameter 'informat=html' not implemented. " . </pre> 
+					
 				</td>
 			</tr>
 			<tr>
@@ -134,8 +145,8 @@ We try to maintain an up-to-date page for <a href="http://nlp2rdf.org/publicatio
 GitHub</a> or send an email to the <a href="http://lists.informatik.uni-leipzig.de/mailman/listinfo/nlp2rdf">mailing list</a></p>
 
 <h2>License</h2>
-<p>Creative Commons - CC BY 3.0
-http://creativecommons.org/licenses/by/3.0/ - The page design is taken from http://semver.org</p>
+<p><a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons - CC BY 3.0</a>
+ - The page design is taken from <a href="http://semver.org">http://semver.org</a></p>
 
  </body>
 </html>
