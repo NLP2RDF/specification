@@ -29,24 +29,35 @@ If you refer to NIF in an academic context, please cite the recent paper publish
 </ul>
 We try to maintain an up-to-date page for <a href="http://nlp2rdf.org/publications">NIF-related scientific publications</a> as well as a page for <a href="http://nlp2rdf.org/acknowledgements">acknowledgements</a> to the large community of contributors.
 
-<h2>Error messages</h2>
-<xmp>@prefix rlog: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#> .</xmp>
-mylog:urn-xxx-yyy-zzz 
+<h2>RLOG - an RDF Logging Ontology (informative)</h2>
+For NIF we have created out own Logging Ontology - RLOG. It is available at <a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#</a>. The ontology is very simple, but it covers the NIF use case very well. As of now, we have not discovered any missing features. RLOG can be combined with the <a href="http://www.w3.org/TR/prov-o/"> W3C Provenance Ontology</a>. The logging has to follow this pattern: 
+<pre>@prefix rlog: &lt;http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#&gt; .
+@prefix logPrefix: &lt;http://example.org/user-defined-logPrefix#&gt; .
+logPrefix:user-defined-urn
 	a rlog:Entry ;
 	rlog:level rlog:ERROR ;
 	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message "Parameter 'informat=html' not implemented. " . </pre> 
-
-<pre><http://nlp2rdf.lod2.eu/instance/log/id_ERROR_10_1377124272902>
-        a              rlog:Entry ;
-        rlog:date      "22:31:12.902"^^xsd:dateTime ;
-        rlog:level     rlog:ERROR ;
-        rlog:message   "rdf:type of http://example.com/error6.html#char=0,27 is misspelled: http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#RFC147String" ;
-        rlog:resource  <http://example.com/error6.html#char=0,27> .</pre> 
-
-
-<h2>Parameters</h2>
+	rlog:message "Log message" ;
+	# optional:
+	rlog:resource  &lt;http://example.com/RDF-resource&gt; . </pre> 
 	
+Here is an example produced by the <a href="https://github.com/NLP2RDF/software#nif-validator" >NIF validator</a>:
+<pre># default prefix, non dereferencable
+@prefix logPrefix: &lt;http://nlp2rdf.lod2.eu/instance/log/&gt; .
+# arbitrary id at the moment. 
+logPrefix:id_ERROR_0_1377165120346
+        a              rlog:Entry ;
+        rlog:date      "2013-08-22T09:52:00.347Z"^^xsd:dateTime ;
+        rlog:level     rlog:ERROR ;
+        rlog:message   """http://example.com/error4.html#char=1,25: for the context,
+                          the length of nif:isString (27) must equal nif:endIndex (25)""" ;
+        rlog:resource  &lt;http://example.com/error4.html#char=1,25&gt; .</pre> 
+
+
+<h2>Parameters (normative, work in progress)</h2>
+
+<p>NIF service implementations (NIF-SI) fall in two categories: Web Service (NIF-WS) and Command Line Interface (NIF-CLI). </p>
+
 	
 	<table border=1 >
 			<tr>
@@ -56,26 +67,30 @@ mylog:urn-xxx-yyy-zzz
 			<tr>
 				<td>
 					<strong>informat</strong>
-					<span>required</span>
+					<span>default: turtle</span>
 				</td>
 				<td>
-					Determines in which format the input is given. Can be "text", "turtle", "rdfxml", "ntriples", "json", "html", "pdf" and much more. </br>
-					<strong>"informat=text", "informat=turtle", "informat=rdfxml"</strong> must be implemented. If an unknown or not implemented "informat" is given, the following error has to be returned:</br>
-					
+					Determines in which format the <b>input</b> is given. NIF-SI must accept values "text", "turtle", "rdfxml", "ntriples". NIF-SI may additionally accept "json", "html", "pdf" and others. </br>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<strong>intype</strong>
-					<span>required</span>
+					<span>NIF-CLI default: file</span>
+					<span>NIF-WS default: direct</span>
 				</td>
 				<td>
-					Determines how the input is accessed or retrieved. Can be "direct", "url", "file".  Webservices must implement "intype=direct" (e.g. via POST) and "intype=url", CLI must implement "intype=file" as well and access files with relative path names. <strong>It remains open how to implement 'direct' in a good way for CLI, maybe URL percent encoding as well? </strong>If an unknown or not implemented intype is given, the following error has to be returned:</br>
-					<pre>mylog:urn-xxx-yyy-zzz 
-	a rlog:Entry ;
-	rlog:level rlog:ERROR ;
-	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message "Parameter 'intype=whatever' not implemented. " . </pre> 
+					Determines how the <b>input</b> is accessed or retrieved. Possible values are: <br>
+					<ul>
+						<li>direct - input is read from stdin or HTTP parameter (GET) or body (POST).</li>
+						<li>url - NIF-SI retrieves the input from the URL. </li>
+						<li>file - input is read from a local file (relative or absolute path) .</li>
+					</ul> 
+					NIF-WS must accept values "url" and "direct"<br>
+					NIF-CLI mus accept "url" and "file" 
+					
+					
+					<ul><li>Note: It remains open how to implement 'direct' in a good way for CLI. There might be for example OS compatability problems. We are waiting for somebody to provide an implementation to study it.</li></ul>
 				</td>
 			</tr>
 			<tr>
@@ -84,38 +99,36 @@ mylog:urn-xxx-yyy-zzz
 					<span>required</span>
 				</td>
 				<td>
-					Determines the input in accordance with the intype and informat parameter. </br>
-				<pre>mylog:urn-xxx-yyy-zzz 
-	a rlog:Entry ;
-	rlog:level rlog:ERROR ;
-	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message """Parameter 'input=This%20is%20a%20sentence.' 
-		is not a valid url, but 'intype=url' was given. """ . </pre> 
+					Determines the input in accordance with the <b>intype</b> and <b>informat</b> parameter. </br>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<strong>urischeme</strong>
-					<span>optional, case-sensitive, default: RFC5147String</span>
+					<span>default: RFC5147String</span>
 				</td>
 				<td>
 					Determines the urischeme to be used. Must be the full URI of the scheme of the OWL class. In case the namespace is "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#" it can be omitted for brevity.
 					Allowed values: "RFC5147String", "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#RFC5147String", etc. </br>
-					<pre>mylog:urn-xxx-yyy-zzz 
-	a rlog:Entry ;
-	rlog:level rlog:ERROR ;
-	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message """Parameter 'urischeme=RFC7415String' 
-		does not exist, did you mean RFC5147String?""" . </pre> 
+					
 				</td>
 			</tr>
 			<tr>
 				<td>
 				   <strong>prefix</strong> 
-					<span>optional</span>
+					<span></span>
 				</td>
 				<td>
 					   A prefix, which is used to create any URIs. Therefore the client should ensure, that the prefix is valid, when used at the start of the uri, e.g. http://test.de/test#. It is recommended that the client matches the prefix to the previously used prefix. If the parameter is missing it should be substituted by a sensible default (e.g. the web service uri).
+				</td>
+			</tr>
+			<tr>
+				<td>
+				   <strong>logPrefix</strong> 
+					<span>??</span>
+				</td>
+				<td>
+					  
 				</td>
 			</tr>
 			<tr>
@@ -127,7 +140,7 @@ mylog:urn-xxx-yyy-zzz
 					Some parameters for certain urischemes, e.g. contextlength
 				</td>
 			</tr>
-			<tr>
+			<!--tr>
 				<td>
 				   <strong>debug</strong> 
 					<span>optional, default: false</span>
@@ -135,7 +148,7 @@ mylog:urn-xxx-yyy-zzz
 				<td>
 					debug = "true" | "false" This options determines, if additional debug messages and errors should be written within the RDF.
 				</td>
-			</tr>
+			</tr-->
 	</table>
 
 <h2>About</h2>
