@@ -70,7 +70,7 @@ logPrefix:id_ERROR_0_1377165120346
 					<span>default: turtle</span>
 				</td>
 				<td>
-					Determines in which format the <b>input</b> is given. NIF-SI must accept values "text", "turtle", "rdfxml", "ntriples". NIF-SI may additionally accept "json", "html", "pdf" and others. </br>
+					Determines in which format the <b>input</b> is given. NIF-SI must accept values "text", "turtle", "rdfxml". NIF-SI may additionally accept "ntriples", "json", "html", "pdf" and others. </br>
 				</td>
 			</tr>
 			<tr>
@@ -104,6 +104,23 @@ logPrefix:id_ERROR_0_1377165120346
 			</tr>
 			<tr>
 				<td>
+					<strong>outformat</strong>
+					<span>default: turtle</span>
+				</td>
+				<td>
+					Determines the format of the output. NIF-SI must accept values  "text", "turtle", "rdfxml" . </br>
+					Additionally, NIF-WS must (1) honor the "Accept: " HTTP Request header as well as set the correct "Content-Type" HTTP response header for the following values:
+					<ul>
+						<li>text - text/plain</li>
+						<li>turtle - text/turtle</li>
+						<li>rdfxml - text/rdfxml</li>
+					</ul> 
+					Note that GET and POST overrides "Accept:". 
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
 					<strong>urischeme</strong>
 					<span>default: RFC5147String</span>
 				</td>
@@ -119,16 +136,17 @@ logPrefix:id_ERROR_0_1377165120346
 					<span></span>
 				</td>
 				<td>
-					   A prefix, which is used to create any URIs. Therefore the client should ensure, that the prefix is valid, when used at the start of the uri, e.g. http://test.de/test#. It is recommended that the client matches the prefix to the previously used prefix. If the parameter is missing it should be substituted by a sensible default (e.g. the web service uri).
+					   A prefix, which is used to create URIs. Therefore the client should ensure, that the prefix is valid, when used at the start of the uri, e.g. http://test.de/test#. It is recommended that the client matches the prefix to the previously used prefix. If the parameter is missing it should be substituted by a sensible default (e.g. the web service uri).
+					   
 				</td>
 			</tr>
 			<tr>
 				<td>
 				   <strong>logPrefix</strong> 
-					<span>??</span>
+					<span></span>
 				</td>
 				<td>
-					  
+					  ??
 				</td>
 			</tr>
 			<tr>
