@@ -16,12 +16,12 @@
      <li><a href="/nlp2rdf/specification/api/api-0.0.0.html">0.0.0</a></li>
      <li><a href="/nlp2rdf/">Back to Overview</a></li>
    </ol>
-   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>Web Service Access Specification</h1><h2>Document Version 0.0.0 (not versioned yet)</h2> 
+   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>Public API Specification</h1><h2>Document Version 0.0.0 (not versioned yet)</h2> 
    
 <h2>Summary</h2>
 <p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software (<a href="http://persistence.uni-leipzig.org/nlp2rdf">overview</a>), which are combined under the version identifier "NIF 2.0", but are <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">versioned individually</a>.</p>
 
-<p>This specification defines parameters for NIF web services.</p>
+<p>This specification defines parameters for NIF service implementations (NIF-SI): Web Service (NIF-WS) and Command Line Interface (NIF-CLI).</p>
 
 <!--
 Generic part START
@@ -45,30 +45,6 @@ There is also a list of further <a href="http://nlp2rdf.org/publications">NIF-re
 <!--
 Generic part END
 -->
-
-<h2>RLOG - an RDF Logging Ontology (informative)</h2>
-For NIF we have created out own Logging Ontology - RLOG. It is available at <a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#</a>. The ontology is very simple, but it covers the NIF use case very well. As of now, we have not discovered any missing features. RLOG can be combined with the <a href="http://www.w3.org/TR/prov-o/"> W3C Provenance Ontology</a>. The logging has to follow this pattern: 
-<pre>@prefix rlog: &lt;http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#&gt; .
-@prefix logPrefix: &lt;http://example.org/user-defined-logPrefix#&gt; .
-logPrefix:user-defined-urn
-	a rlog:Entry ;
-	rlog:level rlog:ERROR ;
-	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message "Log message" ;
-	# optional:
-	rlog:resource  &lt;http://example.com/RDF-resource&gt; . </pre> 
-	
-Here is an example produced by the <a href="https://github.com/NLP2RDF/software#nif-validator" >NIF validator</a>:
-<pre># default prefix, non dereferencable
-@prefix logPrefix: &lt;http://nlp2rdf.lod2.eu/instance/log/&gt; .
-# arbitrary id at the moment. 
-logPrefix:id_ERROR_0_1377165120346
-        a              rlog:Entry ;
-        rlog:date      "2013-08-22T09:52:00.347Z"^^xsd:dateTime ;
-        rlog:level     rlog:ERROR ;
-        rlog:message   """http://example.com/error4.html#char=1,25: for the context,
-                          the length of nif:isString (27) must equal nif:endIndex (25)""" ;
-        rlog:resource  &lt;http://example.com/error4.html#char=1,25&gt; .</pre> 
 
 
 <h2>Parameters (intended to be normative)</h2>
@@ -186,6 +162,29 @@ logPrefix:id_ERROR_0_1377165120346
 			</tr-->
 	</table>
 
+<h2>RLOG - an RDF Logging Ontology (informative)</h2>
+For NIF we have created out own Logging Ontology - RLOG. It is available at <a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#</a>. The ontology is very simple, but it covers the NIF use case very well. As of now, we have not discovered any missing features. RLOG can be combined with the <a href="http://www.w3.org/TR/prov-o/"> W3C Provenance Ontology</a>. The logging has to follow this pattern: 
+<pre>@prefix rlog: &lt;http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#&gt; .
+@prefix logPrefix: &lt;http://example.org/user-defined-logPrefix#&gt; .
+logPrefix:user-defined-urn
+	a rlog:Entry ;
+	rlog:level rlog:ERROR ;
+	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
+	rlog:message "Log message" ;
+	# optional:
+	rlog:resource  &lt;http://example.com/RDF-resource&gt; . </pre> 
+	
+Here is an example produced by the <a href="https://github.com/NLP2RDF/software#nif-validator" >NIF validator</a>:
+<pre># default prefix, non dereferencable
+@prefix logPrefix: &lt;http://nlp2rdf.lod2.eu/instance/log/&gt; .
+# arbitrary id at the moment. 
+logPrefix:id_ERROR_0_1377165120346
+        a              rlog:Entry ;
+        rlog:date      "2013-08-22T09:52:00.347Z"^^xsd:dateTime ;
+        rlog:level     rlog:ERROR ;
+        rlog:message   """http://example.com/error4.html#char=1,25: for the context,
+                          the length of nif:isString (27) must equal nif:endIndex (25)""" ;
+        rlog:resource  &lt;http://example.com/error4.html#char=1,25&gt; .</pre> 
 
 <!--
 Generic part START
