@@ -2,7 +2,7 @@
 <html>
  <head>
   <meta charset="utf-8">
-  <title>NLP Interchange Format (NIF) 2.0 - License, Persistence, Versioning and Resource List</title>
+  <title>NLP Interchange Format (NIF) 2.0 - License, Persistence and Versioning</title>
   <meta name="author" content="Sebastian Hellmann">
   <link rel="stylesheet" href="css/main.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
@@ -14,11 +14,13 @@
    <ol class="nav">
      <li><a href="/nlp2rdf/specification/version.html">current</a></li>
      <li><a href="/nlp2rdf/specification/version/version-0.0.0.html">0.0.0</a></li>
+     <li><a href="/nlp2rdf/">Back to Overview</a></li>
    </ol>
-   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>License, Persistence, Versioning and Resource List, Version 0.0.0</h1>
+   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>License, Persistence and Versioning</h1><h2>Document Version 0.0.0</h2> 
 <h2>Summary</h2>
-<p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software, which are combined under the version identifier "2.0", but are versioned individually. </p>
-<p>This document regulates the procedure in which the NIF 2.0 standard is advanced. At the end of the page, there is a list of resources published and maintained by the project. In summary, the following policies are applicable:</p>
+<p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software (<a href="http://persistence.uni-leipzig.org/nlp2rdf">overview</a>), which are combined under the version identifier "NIF 2.0", but are <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">versioned individually</a>.</p>
+
+<p>This specification regulates the procedure in which the NIF 2.0 standard is advanced. In summary, the following policies are applicable:</p>
 
 <ol>
 <li>License: The NLP2RDF project is interested in a wide spread adoption of NIF. Open licenses are preferred and mandatory for core resources. In case of license incompatability, please contact the TODO project maintainers to either waive licenses or add additional compatible licenses.</li>
@@ -26,17 +28,30 @@
 <li>Persistence: The computer center of the 600 year old University of Leipzig kindly provided us with persistent web space for the publication of the NIF standard. This will guarantuee the persistent hosting of the ontologies and the specs. Additionally, we are maintaining short- and medium-term demos und webservices at http://nlp2rdf.org, http://nlp2rdf.lod2.eu and http://lider-project.eu</li>
 <li>Versioning: Individual resources have different versioning procedures in place. This document specifies how all NIF resources are versioned.</li>
 </ol>
-<p></p>
 
-<h2>How to contribute resources (software, implementations, ontologies) to NIF 2.0?</h2>
-In order to contribute resources to the project, they have to have open licenses, a versioning procedure consistent with this document and a pledge of maintenance for some years. Furthermore, they need to be added to this document and announced on the NLP2RDF blog. 
 
-<h2>How to attribute NIF?</h2>
+<!--
+Generic part START
+-->
+<h2>About</h2>
+<h3>License, Persistence, Versioning</h3>
+We provide a <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">document</a> explaining the process and further meta-level information.
+
+<h3>How to contribute resources (software, implementations, ontologies, corpora) to NIF 2.0?</h3>
+<p>In order to contribute resources to the project, they have to have open licenses, a versioning procedure consistent with <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">this document</a> and a pledge of maintenance for some years. Furthermore, they need to be added to the resource list and announced on the <a href="http://nlp2rdf.org>"> NLP2RDF blog</a>. Please ask on the <a href="http://lists.informatik.uni-leipzig.de/mailman/listinfo/nlp2rdf">public mailing list</a> or get into <a href="http://nlp2rdf.org/contactimprint">contact</a>, directly.</p>
+
+<h3>How to attribute NIF?</h3>
+We try to maintain an up-to-date page with <a href="http://nlp2rdf.org/acknowledgements">acknowledgements</a> to the large community of contributors.
+
 If you refer to NIF in an academic context, please cite the recent paper published at the ISWC in Use track 2013:
 <ul>
 	<li><a href="http://svn.aksw.org/papers/2013/ISWC_NIF/public.pdf" target="_blank">Integrating NLP using Linked Data</a>. Sebastian Hellmann, Jens Lehmann, Sören Auer, and Martin Brümmer. 12th International Semantic Web Conference, 21-25 October 2013, Sydney, Australia, (2013)</li>
 </ul>
-We try to maintain an up-to-date page for <a href="http://nlp2rdf.org/publications">NIF-related scientific publications</a> as well as a page for <a href="http://nlp2rdf.org/acknowledgements">acknowledgements</a> to the large community of contributors.
+There is also a list of further <a href="http://nlp2rdf.org/publications">NIF-related scientific publications</a>.
+
+<!--
+Generic part END
+-->
 
 <h2>Persistence</h2>
 The computer center of the 600 year old University of Leipzig kindly provided us with persistent web space for the publication of the NIF standard. The web space is at 
@@ -44,11 +59,11 @@ http://persistence.uni-leipzig.org/nlp2rdf/ and snapshots of the GitHub reposito
 On the server you will be able to find the following subfolders: ontologies, specifications, documents, examples.
 In addition to the persistent hosting, we will run short to midterm demos on http://nlp2rdf.lod2.eu , http://nlp2rdf.org , http://lider-project.eu
 
-The runtime of the hosting is virtually unlimited. We would like to be upfront and make the three main risks transparent for users of NIF.
+The runtime of the hosting is virtually unlimited. We would like to be upfront and make the two main risks transparent for users of NIF:
 <h3>Scenario 1</h3>
-Three employees of University Leipzig (Sebastian Hellmann, Martin Brümmer and Jens Lehmann) have access to the server. There is a chance that we travel to a conference together in the same vehicle (e.g. airplane). If the vehicle crashes, the server will still be available and NIF will remain exactly as is. Although it is not editable any more, anybody from the community can pick it up and develop it further due to its open license. 
+Three employees of University Leipzig (Sebastian Hellmann, Martin Brümmer and Jens Lehmann) have access to the server. There is a chance that we travel to a conference together in the same vehicle (e.g. airplane). If the vehicle crashes, the server will still be available and NIF will remain exactly as is. Although the files on the server can not be changed any more, anybody from the community is free to continue the work on NLP2RDF and develop it further due to its open license. 
 <h3>Scenario 2</h3>
-The University Leipzig will shut down their computer center. This is totally improbable. 
+The University Leipzig will shut down their computer center. This is totally improbable and since you might be fighting pollution, robots or zombies, persistence of NIF resources might be the least of your worries. 
 
 <h2>Versioning</h2>
 For all resources of NIF 2.0, we try to be consistent with versioning. 
@@ -74,96 +89,9 @@ We will provide Maven packages for the ontologies and the software. The version 
 Note that we are hosting an Archiva at AKSW, where we deploy the Jars in regular intervalls. Our Maven repository has a high uptime and is repaired quite fast normally. Please notify the <a href="http://lists.informatik.uni-leipzig.de/mailman/listinfo/nlp2rdf">mailing list</a>, if you encounter any errors. It will be maintained for a couple of years, but there are no long term plans. Please use your own Maven repository, if you depend heavily on it. Detailed instruction can be found in the <a href="https://github.com/NLP2RDF/software#maven" >GitHub README</a>.
 
 
-<h2>List of resources</h2>
-
-<h3>Ontologies</h3>
-
-Note: all ontologies are available as RDF/XML and Turtle via content negotiation.
-
-<h4>NIF 2.0 Core Ontology</h4>
-<table border="1" >
-<tr><td>URL</td><td><a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#" target="_blank">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#</a> </td></tr>
-<tr><td>Versioning Level</td><td>Individual URIs</td></tr>
-<tr><td>Versioning Method</td><td>Once a URI reaches 1.y.z it will not be removed any more. This means it will be terminological stable.</td></tr>
-<tr><td>Revisions</td><td>GitHub, Changelog written to rdfs:comment</td></tr>
-<tr><td>Status</td><td>Most of the core properties are stable.</td></tr>
-</table>
-Additional models:
-<ol>
-	<li><a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#">Terminological model</a></li>
-	<li><a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core/nif-core-inf.ttl">Inference model</a></li>
-	<li><a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core/nif-core-val.ttl">Validation model</a></li>
-</ol>
-
-<h4>RLOG - an RDF Logging Ontology</h4>
-<table border="1" >
-<tr><td>URL</td><td><a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#" target="_blank">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#</a> </td></tr>
-<tr><td>Versioning Level</td><td>Ontology</td></tr>
-<tr><td>Versioning Method</td><td>as specified in  <a href="http://semver.org/">http://semver.org/</a></td></tr>
-<tr><td>Revisions</td><td>GitHub</td></tr>
-<tr><td>Status</td><td>Mature</td></tr>
-</table>
-
-<h4>Simple TestCase Ontology</h4>
-<table border="1" >
-<tr><td>URL</td><td><a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/stc#" target="_blank">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/stc#</a> </td></tr>
-<tr><td>Versioning Level</td><td>Ontology</td></tr>
-<tr><td>Versioning Method</td><td>as specified in  <a href="http://semver.org/">http://semver.org/</a></td></tr>
-<tr><td>Revisions</td><td>GitHub</td></tr>
-<tr><td>Status</td><td>This ontology is a helper ontology and just use for some validation of RDF tool output by tools implementing NIF.</td></tr>
-</table>
-<h4>NIF Validator TestCase Suite</h4>
-<table border="1" >
-<tr><td>URL</td><td><a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/testcase/lib/nif-2.0-suite.ttl" target="_blank">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/testcase/lib/nif-2.0-suite.ttl</a> </td></tr>
-<tr><td>Versioning Level</td><td>Ontology</td></tr>
-<tr><td>Versioning Method</td><td>as specified in  <a href="http://semver.org/">http://semver.org/</a></td></tr>
-<tr><td>Revisions</td><td>GitHub, changelog in rdfs:comment</td></tr>
-<tr><td>Status</td><td>A collection of SPARQL queries to validate NIF models</td></tr>
-</table>
-
-<h3>Specifications</h3>
-<h4>License, Persistence, Versioning and Resource List</h4>
-This document.
-<table border="1" >
-<tr><td>URL</td><td><a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html" target="_blank">http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html</a> </td></tr>
-<tr><td>Versioning Level</td><td>Document</td></tr>
-<tr><td>Versioning Method</td><td>as specified in <a href="http://semver.org/">http://semver.org/</a></td></tr>
-<tr><td>Revisions</td><td>GitHub and previous versions are kept on the server</td></tr>
-</table>
-
-<h4>Public API Specification</h4>
-A document specifying the public qe api requirments of tools implementing NIF.
-<table border="1" >
-<tr><td>URL</td><td><a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html" target="_blank">http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html</a> </td></tr>
-<tr><td>Versioning Level</td><td>Document</td></tr>
-<tr><td>Versioning Method</td><td>as specified in <a href="http://semver.org/">http://semver.org/</a></td></tr>
-<tr><td>Revisions</td><td>GitHub and previous versions are kept on the server</td></tr>
-</table>
-
-<h4>NIF 2.0 Core Specification</h4>
-A document specifying the core of NIF.
-<table border="1" >
-<tr><td>URL</td><td><a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/core.html" target="_blank">http://persistence.uni-leipzig.org/nlp2rdf/specification/core.html</a> </td></tr>
-<tr><td>Versioning Level</td><td>Document</td></tr>
-<tr><td>Versioning Method</td><td>as specified in  <a href="http://semver.org/">http://semver.org/</a></td></tr>
-<tr><td>Revisions</td><td>GitHub and previous versions are kept on the server</td></tr>
-<tr><td>Status</td><td>Under development</td></tr>
-</table>
-
-<h4>NIF 1.0 Specification</h4>
-A document specifying the deprecated NIF 1.0 specification. During NIF 1.0, we did not track revisions or versions. The old specification can be found here: <a href="">http://nlp2rdf.org/nif-1-0</a>
-
-<h3>Software</h3>
-<h4>NIF Validator</h4>
-A software artifact, that should be used to validate the implementation of NIF .
-<table border="1" >
-<tr><td>URL</td><td><a href="https://github.com/NLP2RDF/software/blob/master/validate.jar" target="_blank">https://github.com/NLP2RDF/software/blob/master/validate.jar</a> </td></tr>
-<tr><td>Versioning Level</td><td>no versioning</td></tr>
-<tr><td>Versioning Method</td><td>dependends on the test suite an the API specification</td></tr>
-<tr><td>Revisions</td><td>GitHub</td></tr>
-<tr><td>Status</td><td>Under development, documentation can be found here: <a href="https://github.com/NLP2RDF/software#nif-validator">https://github.com/NLP2RDF/software#nif-validator</a></td></tr>
-</table>
-
+<!--
+Generic part START
+-->
 <h2>About</h2>
 <p>This document is authored by <a href="http://bis.informatik.uni-leipzig.de/SebastianHellmann">Sebastian Hellman</a> from the AKSW research group.</p>
 
@@ -173,6 +101,9 @@ GitHub</a> or send an email to the <a href="http://lists.informatik.uni-leipzig.
 <h2>License</h2>
 <p><a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons - CC BY 3.0</a>
  - The page design is taken from <a href="http://semver.org">http://semver.org</a></p>
+<!--
+Generic part END
+-->
 
 
  </body>
