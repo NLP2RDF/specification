@@ -16,7 +16,7 @@
      <li><a href="/nlp2rdf/specification/api/api-0.0.0.html">0.0.0</a></li>
      <li><a href="/nlp2rdf/">Back to Overview</a></li>
    </ol>
-   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>Web Service Access Specification</h1><h2>Document Version 0.0.0</h2> 
+   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>Web Service Access Specification</h1><h2>Document Version 0.0.0 (not versioned yet)</h2> 
    
 <h2>Summary</h2>
 <p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software (<a href="http://persistence.uni-leipzig.org/nlp2rdf">overview</a>), which are combined under the version identifier "NIF 2.0", but are <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">versioned individually</a>.</p>
@@ -71,7 +71,7 @@ logPrefix:id_ERROR_0_1377165120346
         rlog:resource  &lt;http://example.com/error4.html#char=1,25&gt; .</pre> 
 
 
-<h2>Parameters (normative, work in progress)</h2>
+<h2>Parameters (intended to be normative)</h2>
 
 <p>NIF service implementations (NIF-SI) fall in two categories: Web Service (NIF-WS) and Command Line Interface (NIF-CLI). </p>
 
@@ -87,7 +87,7 @@ logPrefix:id_ERROR_0_1377165120346
 					<span>default: turtle</span>
 				</td>
 				<td>
-					Determines in which format the <b>input</b> is given. NIF-SI must accept values "text", "turtle", "rdfxml". NIF-SI may additionally accept "ntriples", "json", "html", "pdf" and others. </br>
+					Determines in which format the <b>input</b> is given. NIF-SI must accept values "text", "turtle", "rdfxml". NIF-SI may additionally accept "ntriples", "json", "json-ld" "html", "pdf" and others. </br>
 				</td>
 			</tr>
 			<tr>
