@@ -16,7 +16,7 @@
      <li><a href="/nlp2rdf/specification/api/api-0.0.0.html">0.0.0</a></li>
       <li><a href="/nlp2rdf/">Back to Overview</a></li>
    </ol>
-   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>Core Specification</h1><h2>Document Version 0.0.0</h2> 
+   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>Core Specification</h1><h2>Document Version 0.0.0 (not versioned yet)</h2> 
 <h2>Summary</h2>
 <p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software (<a href="http://persistence.uni-leipzig.org/nlp2rdf">overview</a>), which are combined under the version identifier "NIF 2.0", but are <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">versioned individually</a>.</p>
 
@@ -44,18 +44,37 @@ There is also a list of further <a href="http://nlp2rdf.org/publications">NIF-re
 <!--
 Generic part END
 -->
+<h2>Overview</h2>
+Each section below describes one aspect of NIF 2.0. 
 
+<h2>Creation</h2>
+<p>NIF is primarily used for text annotation. In order to enter the NIF and RDF world, your text must be converted to an RDF literal as an object of the nif:isString property:
+<code>&lt;SubjectURI&gt; nif:isString "Your text, e.g. an article or a sentence; bascially any sequence of characters." .</code>
+
+According to the RDF specification (<a href="https://dvcs.w3.org/hg/rdf/raw-file/default/rdf-concepts/index.html#section-Graph-Literal">RDF 3.3 Literals</a>),  RDF literals are Unicode strings, which should be in Normal Form C. NIF is stricter and requires that any implementor must use Normal Form C. This is necessary as virtually all NLP tools depend on string length counts and order of code units of characters. 
+</p>
+
+<h2>Annotation</h2>
+<h2>Extension</h2>
+<h2>Validation</h2>
+Download the <a href="https://github.com/NLP2RDF/software#nif-validator">validator</a> and debug your tool. 
+(todo elaborate)
+
+<h2>Access</h2>
+Implement the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html">Public API Specification</a> for your NIF implementation. 
+
+<h2>Conformance</h2>
 
 <!--
 Generic part START
 -->
-<h2>About</h2>
+
+<h2>Author and Licence</h2>
 <p>This document is authored by <a href="http://bis.informatik.uni-leipzig.de/SebastianHellmann">Sebastian Hellman</a> from the AKSW research group.</p>
 
 <p>If you'd like to leave feedback, please <a href="https://github.com/NLP2RDF/specification/issues">open an issue on
 GitHub</a> or send an email to the <a href="http://lists.informatik.uni-leipzig.de/mailman/listinfo/nlp2rdf">mailing list</a></p>
 
-<h2>License</h2>
 <p><a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons - CC BY 3.0</a>
  - The page design is taken from <a href="http://semver.org">http://semver.org</a></p>
 <!--
