@@ -46,79 +46,91 @@ There is also a list of further <a href="http://nlp2rdf.org/publications">NIF-re
 Generic part END
 -->
 
+<h2>NIF Service Implementation (NIF-SI)</h2>
+<p>NIF-SI may be implemented as Web Service (NIF-WS) and Command Line Interface (NIF-CLI). Bot must implement common parameters in the next section as well as each of the type-specific parameters. All parameters except <code>input</code> must have a sensible default implemented and thus must be omittable, when calling the implementation.</p>
 
-<h2>Parameters (intended to be normative)</h2>
-
-<p>NIF service implementations (NIF-SI) fall in two categories: Web Service (NIF-WS) and Command Line Interface (NIF-CLI). </p>
-
-	
+<h2>Common Parameters</h2>	
 	<table border=1 >
 			<tr>
-				<th>Parameters</th>
+				<th>Parameter</th>
 				<th>Description</th>
 			</tr>                        
 			<tr>
 				<td>
-					<strong>informat</strong>
-					<span>default: turtle</span>
+					<strong>informat</strong><br>
 				</td>
 				<td>
-					Determines in which format the <b>input</b> is given. NIF-SI must accept values "text", "turtle", "rdfxml". NIF-SI may additionally accept "ntriples", "json", "json-ld" "html", "pdf" and others. </br>
+					<h3 id="informat">Input Format<br/>
+						NIF-WS default: <code>turtle</code><br/>
+						NIF-CLI default: <code>turtle</code>
+					</h3>
+					<ul><li>Determines in which format the <b>input</b> is given.</li>
+					<li>NIF-SI must accept values <code>text</code>, <code>turtle</code>, <code>rdfxml</code>. </li>
+					<li>NIF-SI may additionally accept <code>ntriples</code>, <code>json</code>, <code>json-ld</code> <code>html</code>, <code>pdf</code> and others. </li>
+					</ul>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<strong>intype</strong>
-					<span>NIF-CLI default: file</span>
-					<span>NIF-WS default: direct</span>
 				</td>
 				<td>
-					Determines how the <b>input</b> is accessed or retrieved. Possible values are: <br>
+					<h3 id="intype">Input Type<br/>
+						NIF-WS default: <code>direct</code><br/>
+						NIF-CLI default: <code>direct</code>
+					</h3>
+					Determines how the <b>input</b> is accessed or retrieved. Values are:
 					<ul>
-						<li>direct - input is read from stdin or HTTP parameter (GET) or body (POST).</li>
-						<li>url - NIF-SI retrieves the input from the URL. </li>
-						<li>file - input is read from a local file (relative or absolute path) .</li>
+						<li><code>direct</code> - input is read from stdin or HTTP parameter (GET) or body (POST).</li>
+						<li><code>url</code> - NIF-SI retrieves the input from the URL. </li>
+						<li><code>file</code> - input is read from a local file (relative or absolute path) .</li>
 					</ul> 
-					NIF-WS must accept values "url" and "direct"<br>
-					NIF-CLI mus accept "url" and "file" 
-					
-					
-					<ul><li>Note: It remains open how to implement 'direct' in a good way for CLI. There might be for example OS compatability problems. We are waiting for somebody to provide an implementation to study it.</li></ul>
+					NIF-WS must accept values <code>url</code> and <code>direct</code><br>
+					NIF-CLI must accept values <code>url</code> and <code>file</code>.
+					NIF-CLI must additionally accept <code>direct</code> for UNIX systems, e.g. <code>cat textfile.txt | java -jar nif-cli.jar --informat text </code>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<strong>input</strong>
-					<span>required</span>
-				</td>
 				<td>
+					<h3 id="input">Input<br/>
+						no default, this is the serialized data (i.e. the text or the NIF RDF)
+					</h3>
 					Determines the input in accordance with the <b>intype</b> and <b>informat</b> parameter. </br>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<strong>outformat</strong>
-					<span>default: turtle</span>
 				</td>
 				<td>
-					Determines the format of the output. NIF-SI must accept values  "text", "turtle", "rdfxml" . </br>
-					Additionally, NIF-WS must (1) honor the "Accept: " HTTP Request header as well as set the correct "Content-Type" HTTP response header for the following values:
+					<h3 id="outformat">Output Format<br/>
+						NIF-WS default: <code>turtle</code><br/>
+						NIF-CLI default: <code>turtle</code>
+					</h3>
+					Determines the format of the output.<br>
+					NIF-SI must accept values <code>text</code>, <code>turtle</code>, <code>rdfxml</code>. </br>
+					Additionally, NIF-WS must honor the "Accept: " HTTP Request header as well as set the correct "Content-Type" HTTP response header for the following values:
 					<ul>
 						<li>text - text/plain</li>
 						<li>turtle - text/turtle</li>
 						<li>rdfxml - text/rdfxml</li>
 					</ul> 
 					Note that GET and POST overrides "Accept:". 
-					
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<strong>urischeme</strong>
-					<span>default: RFC5147String</span>
 				</td>
 				<td>
-					Determines the urischeme to be used. Must be the full URI of the scheme of the OWL class. In case the namespace is "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#" it can be omitted for brevity.
+					<h3 id="urischeme">URI Scheme<br/>
+						NIF-WS default: <code>RFC5147String</code><br/>
+						NIF-CLI default: <code>RFC5147String</code>
+					</h3>
+					TODO: this needs to be improved:
+					Determines the urischeme to be used. May be the full URI of the scheme of the OWL class. In case the namespace is "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#" it can be omitted for brevity.
 					Allowed values: "RFC5147String", "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#RFC5147String", etc. </br>
 					
 				</td>
@@ -126,7 +138,6 @@ Generic part END
 			<tr>
 				<td>
 				   <strong>prefix</strong> 
-					<span></span>
 				</td>
 				<td>
 					   A prefix, which is used to create URIs. Therefore the client should ensure, that the prefix is valid, when used at the start of the uri, e.g. http://test.de/test#. It is recommended that the client matches the prefix to the previously used prefix. If the parameter is missing it should be substituted by a sensible default (e.g. the web service uri).
