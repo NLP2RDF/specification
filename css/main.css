@@ -31,7 +31,9 @@ p { margin: 0 0 1em; }
 /* Nav */
 
 ol.nav {
-  background-color: #333;
+  #background-color: #E5EECC;
+  background-color: #617F10;
+  #background-color: #333;
   list-style-type: none;
   margin: 0;
   padding: 10px;
@@ -55,3 +57,8 @@ ol.lang {
 ol.lang li a {
   color: black;
 }
+
+td.c{
+	text-align:center;
+}
+

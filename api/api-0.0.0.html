@@ -6,6 +6,12 @@
   <meta name="author" content="Sebastian Hellmann">
   <link rel="stylesheet" href="css/main.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+   <script src="js/jquery-1.10.2.min.js"></script> 
+    <script> 
+    $(function(){
+      $("#about").load("http://persistence.uni-leipzig.org/nlp2rdf/specification/about.html"); 
+    });
+    </script> 
 </head>
  <body>
    <ol class="nav lang">
@@ -36,33 +42,33 @@
 </ul>
 <h3>Example 1</h3>
 Piping text into NIF-SI of StanfordCoreNLP<br>
-<textarea rows="7" cols="100" disabled>
+<pre>
 # -f or --informat specifies the format (text, turtle, rdfxml)
 # -t or --intype specifies the input type (direct, file, url) 
 echo "My dog also likes eating sausage." | java -jar stanfordNIF-beta.jar -f text -t direct
 
 # -t can be omitted since direct is the default
 echo "My dog also likes eating sausage." | java -jar stanfordNIF-beta.jar -f text 
-</textarea>
+</pre>
 
 
 <h3>Example 2</h3>
-<textarea rows="5" cols="100" disabled>
+<pre border="1">
 # -t or --intype specifies the input type (direct, file, url) 
 # -i or --input specifies the input
 echo "My dog also likes eating sausage." > text.txt
 java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
-</textarea>
+</pre>
 
 
-<h2>Common Parameters</h2>	
+<h2>Common Parameters (normative)</h2>	
 	<table border=1 >
 			<tr>
 				<th>Parameter</th>
 				<th>Description</th>
 			</tr>   
 			<tr>
-				<td>
+				<td class="c">
 					<strong>input</strong><br><br>
 					OR<br><br>
 					<strong>i</strong><br>
@@ -76,7 +82,7 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 				</td>
 			</tr>                     
 			<tr>
-				<td>
+				<td class="c">
 					<strong>informat</strong><br><br>
 					OR<br><br>
 					<strong>f</strong><br>
@@ -93,7 +99,7 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td class="c">
 					<strong>intype</strong><br><br>
 					OR<br><br>
 					<strong>t</strong><br>
@@ -117,7 +123,7 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			</tr>
 			
 			<tr>
-				<td>
+				<td class="c">
 					<strong>outformat</strong><br><br>
 					OR<br><br>
 					<strong>o</strong><br>
@@ -139,7 +145,7 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td class="c">
 					<strong>urischeme</strong><br><br>
 					OR<br><br>
 					<strong>u</strong><br>
@@ -167,57 +173,121 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td class="c">
 				   	<strong>prefix</strong><br><br>
 					OR<br><br>
 					<strong>p</strong><br>
 				</td>
 				<td>
+					   <h3 id="prefix">Prefix<br/>
+						NIF-WS default: special<br/>
+						NIF-CLI default: special</code>
+					   </h3>
+						
 					   A prefix, which is used to create URIs. 
-					   TODO
-					   Therefore the client should ensure, that the prefix is valid, when used at the start of the uri, e.g. http://test.de/test#. It is recommended that the client matches the prefix to the previously used prefix. If the parameter is missing it should be substituted by a sensible default (e.g. the web service uri).
+					   <ol>
+					   <li>The NIF-SI MUST create any new URIs using this <code>prefix</code>.</li>
+					   <li>If the prefix is given the NIF-SI MUST use it to mint new URIs as-is, without any modification.</li>
+					   <li>The NIF-SI MUST concatenate the prefix with the identifier produced based on the <code>urischeme</code> parameter.</li>
+					   <li>If the parameter is missing it MUST be substituted by a sensible default (e.g. the web service URI or a hash over the text or a UUID).</li>
+					   </ol>
+					   
 					   
 				</td>
 			</tr>
 			<tr>
+				<td class="c">
+				   	<strong>config</strong><br><br>
+					OR<br><br>
+					<strong>c</strong><br>
+				</td>
 				<td>
+				   <h3 id="config">Config<br/>
+						NIF-WS default: n/a<br/>
+						NIF-CLI default: n/a</code>
+					   </h3>
+					A string which can be used to configure the NIF-SI.
+					<ul>
+					 <li>No required values are specified for this parameter.</li>
+					 <li>What exactly the NIF-SI requires is left underspecified for now. Can be anything.</li>
+					 <li>If the NIF-SI requires configuration, it MUST use this parameter.</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td class="c">
+				   	<strong>configfile</strong><br><br>
+					OR<br><br>
+					<strong>cf</strong><br>
+				</td>
+				<td>
+				   <h3 id="configfile">Config File<br/>
+						NIF-WS default: n/a<br/>
+						NIF-CLI default: n/a<br>
+					   </h3>
+					A file which can be used to configure the NIF-SI.
+					<ul>
+					 <li>No required values are specified for this parameter.</li>
+					 <li>Same as <code>config</code>, but it is loaded from file.</li>
+					</ul>
+				</td>
+			</tr>
+			</table>
+			
+			<h2>Additional parameters (informative)</h2>
+			
+			<table border="1" >
+			<tr>
+				<td class="c">
 					<strong>logprefix</strong><br><br>
 					OR<br><br>
 					<strong>lp</strong><br>
 				</td>
-				<td>
-TODO
+				<td> <h3 id="logprefix">Log Prefix<br/>
+						NIF-WS default: special<br/>
+						NIF-CLI default: special</code>
+					   </h3>
+					TODO this parameter is still informative. No implementation necessary. 
+					Used to create prefix for log URIs. please use a sensible default. 
+				
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td class="c">
 				   	<strong>uspara</strong><br><br>
 					OR<br><br>
 					<strong>up</strong><br>
 				</td>
-				<td>
+				<td><h3 id="uspara">URI Scheme Parameters<br/>
+						NIF-WS default: n/a<br/>
+						NIF-CLI default: n/a</code>
+					   </h3>
+					TODO this parameter is still informative. No implementation necessary. 
 					Some parameters for certain urischemes, e.g. contextlength
 				</td>
 			</tr>
 			<tr>
-				<td>
-				   	<strong>info</strong><br><br>
+				<td class="c">
+				   	<strong>help</strong><br><br>
 					OR<br><br>
-					<strong>info</strong><br>
+					<strong>h</strong><br>
 				</td>
 				<td>
-				   <strong>info</strong> 
-					<span>default: false</span>
-					debug = "true" | "false" This options determines, if additional debug messages and errors should be written within the RDF.
+				   <h3 id="help">Help<br/>
+						NIF-WS default: false<br/>
+						NIF-CLI default: false</code>
+					   </h3>
+					TODO this parameter is still informative. No implementation necessary. 
+					If this parameter is "true", then some help is displayed. 
 				</td>
 			</tr>
 	</table>
 
 <h2>RLOG - an RDF Logging Ontology (informative)</h2>
-For NIF we have created out own Logging Ontology - RLOG. It is available at <a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#</a>. The ontology is very simple, but it covers the NIF use case very well. As of now, we have not discovered any missing features. RLOG can be combined with the <a href="http://www.w3.org/TR/prov-o/"> W3C Provenance Ontology</a>. The logging has to follow this pattern: 
+For NIF we have created our own Logging Ontology - RLOG. It is available at <a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#</a>. The ontology is very simple, but it covers the NIF use case very well. As of now, we have not discovered any missing features. RLOG can be combined with the <a href="http://www.w3.org/TR/prov-o/"> W3C Provenance Ontology</a>. The logging has to follow this pattern: 
 <pre>@prefix rlog: &lt;http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#&gt; .
-@prefix logPrefix: &lt;http://example.org/user-defined-logPrefix#&gt; .
-logPrefix:user-defined-urn
+@prefix logprefix: &lt;http://example.org/user-defined-logPrefix#&gt; .
+logprefix:user-defined-urn
 	a rlog:Entry ;
 	rlog:level rlog:ERROR ;
 	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
@@ -227,18 +297,17 @@ logPrefix:user-defined-urn
 	
 Here is an example produced by the <a href="https://github.com/NLP2RDF/software#nif-validator" >NIF validator</a>:
 <pre># default prefix, non dereferencable
-@prefix logPrefix: &lt;http://nlp2rdf.lod2.eu/instance/log/&gt; .
+@prefix logprefix: &lt;http://nlp2rdf.lod2.eu/instance/log/&gt; .
 # arbitrary id at the moment. 
-logPrefix:id_ERROR_0_1377165120346
+logprefix:id_ERROR_0_1377165120346
         a              rlog:Entry ;
         rlog:date      "2013-08-22T09:52:00.347Z"^^xsd:dateTime ;
         rlog:level     rlog:ERROR ;
-        rlog:message   """http://example.com/error4.html#char=1,25: for the context,
+        rlog:message   """http://example.com/error4.txt#char=1,25: for the context,
                           the length of nif:isString (27) must equal nif:endIndex (25)""" ;
-        rlog:resource  &lt;http://example.com/error4.html#char=1,25&gt; .</pre> 
+        rlog:resource  &lt;http://example.com/error4.txt#char=1,25&gt; .</pre> 
 
-
-
+<div id="about"></div>
 
 
  </body>

@@ -6,16 +6,21 @@
   <meta name="author" content="Sebastian Hellmann">
   <link rel="stylesheet" href="css/main.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+   <script src="js/jquery-1.10.2.min.js"></script> 
+    <script> 
+    $(function(){
+      $("#about").load("http://persistence.uni-leipzig.org/nlp2rdf/specification/about.html"); 
+    });
+    </script> 
 </head>
  <body>
-   <ol class="nav lang">
+	<ol class="nav lang">
+	  <li><a href="/nlp2rdf/">Back to Overview</a></li>
+	  <li><a href="/nlp2rdf/specification/core.html">latest draft</a></li> 
      <li></li>
    </ol>
-   <ol class="nav">
-     <li><a href="/nlp2rdf/">Back to Overview</a></li>
-     <li><a href="/nlp2rdf/specification/api.html">current</a></li>
-     <li><a href="/nlp2rdf/specification/api/api-0.0.0.html">0.0.0</a></li>
-     <li><a href="/nlp2rdf/specification/api.html">draft</a></li> 
+     <ol class="nav">
+     <li><a href="/nlp2rdf/specification/core/core-0.0.0.html">v0.0.0</a></li>
    </ol>
    <h2>NLP Interchange Format (NIF) 2.0</h2><h1>Core Specification</h1><h2>Document Version 0.0.0 (not versioned yet)</h2> 
 <h2>Summary</h2>
@@ -47,6 +52,7 @@ Implement the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/
 <h2>Conformance</h2>
 
 
+<div id="about"></div>
 
 
  </body>

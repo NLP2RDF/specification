@@ -6,18 +6,22 @@
   <meta name="author" content="Sebastian Hellmann">
   <link rel="stylesheet" href="css/main.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+  <script src="js/jquery-1.10.2.min.js"></script> 
+    <script> 
+    $(function(){
+      $("#about").load("http://persistence.uni-leipzig.org/nlp2rdf/specification/about.html"); 
+    });
+    </script> 
 </head>
  <body>
-   <ol class="nav lang">
+	<ol class="nav lang">
+	  <li><a href="/nlp2rdf/">Back to Overview</a></li>
+	  <li><a href="/nlp2rdf/specification/version.html">latest draft</a></li> 
      <li></li>
    </ol>
-   <ol class="nav">
-     <li><a href="/nlp2rdf/">Back to Overview</a></li>
-     <li><a href="/nlp2rdf/specification/version.html">current</a></li>
-     <li><a href="/nlp2rdf/specification/version/version-0.0.0.html">0.0.0</a></li>
-     <li><a href="/nlp2rdf/specification/version.html">draft</a></li> 
+     <ol class="nav">
+     <li><a href="/nlp2rdf/specification/version/version-0.0.0.html">v0.0.0</a></li>
    </ol>
-   
    <h2>NLP Interchange Format (NIF) 2.0</h2><h1>License, Persistence and Versioning</h1><h2>Document Version 0.0.0</h2> 
 <h2>Summary</h2>
 <p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software (<a href="http://persistence.uni-leipzig.org/nlp2rdf">overview</a>), which are combined under the version identifier "NIF 2.0", but are <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">versioned individually</a>.</p>
@@ -66,8 +70,6 @@ Once the version for an ontology or a URI that appears in an ontology reaches 1.
 We will provide Maven packages for the ontologies and the software. The version numbers of the Maven jars will follow SemVer.org. 
 Note that we are hosting an Archiva at AKSW, where we deploy the Jars in regular intervalls. Our Maven repository has a high uptime and is repaired quite fast normally. Please notify the <a href="http://lists.informatik.uni-leipzig.de/mailman/listinfo/nlp2rdf">mailing list</a>, if you encounter any errors. It will be maintained for a couple of years, but there are no long term plans. Please use your own Maven repository, if you depend heavily on it. Detailed instruction can be found in the <a href="https://github.com/NLP2RDF/software#maven" >GitHub README</a>.
 
-
-
-
+<div id="about"></div>
  </body>
 </html>
