@@ -11,40 +11,20 @@
    <ol class="nav lang">
      <li></li>
    </ol>
-   <ol class="nav">
-     <li><a href="/nlp2rdf/specification/api.html">current</a></li>
-     <li><a href="/nlp2rdf/specification/api/api-0.0.0.html">0.0.0</a></li>
+   
+     <ol class="nav">
      <li><a href="/nlp2rdf/">Back to Overview</a></li>
+     <li><a href="/nlp2rdf/specification/api.html">current</a></li>
+     <li><a href="/nlp2rdf/specification/api/api-0.0.0.html">v0.0.0</a></li>
+     <li><a href="/nlp2rdf/specification/api.html">draft</a></li> 
    </ol>
+   
    <h2>NLP Interchange Format (NIF) 2.0</h2><h1>Public API Specification</h1><h2>Document Version 0.0.0 (not versioned yet)</h2> 
    
 <h2>Summary</h2>
 <p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software (<a href="http://persistence.uni-leipzig.org/nlp2rdf">overview</a>), which are combined under the version identifier "NIF 2.0", but are <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">versioned individually</a>.</p>
 
 <p>This specification defines parameters for NIF service implementations (NIF-SI): Web Service (NIF-WS) and Command Line Interface (NIF-CLI).</p>
-
-<!--
-Generic part START
--->
-<h2>About</h2>
-<h3>License, Persistence, Versioning</h3>
-We provide a <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">document</a> explaining the process and further meta-level information.
-
-<h3>How to contribute resources (software, implementations, ontologies, corpora) to NIF 2.0?</h3>
-<p>In order to contribute resources to the project, they have to have open licenses, a versioning procedure consistent with <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">this document</a> and a pledge of maintenance for some years. Furthermore, they need to be added to the resource list and announced on the <a href="http://nlp2rdf.org>"> NLP2RDF blog</a>. Please ask on the <a href="http://lists.informatik.uni-leipzig.de/mailman/listinfo/nlp2rdf">public mailing list</a> or get into <a href="http://nlp2rdf.org/contactimprint">contact</a>, directly.</p>
-
-<h3>How to attribute NIF?</h3>
-We try to maintain an up-to-date page with <a href="http://nlp2rdf.org/acknowledgements">acknowledgements</a> to the large community of contributors.
-
-If you refer to NIF in an academic context, please cite the recent paper published at the ISWC in Use track 2013:
-<ul>
-	<li><a href="http://svn.aksw.org/papers/2013/ISWC_NIF/public.pdf" target="_blank">Integrating NLP using Linked Data</a>. Sebastian Hellmann, Jens Lehmann, Sören Auer, and Martin Brümmer. 12th International Semantic Web Conference, 21-25 October 2013, Sydney, Australia, (2013)</li>
-</ul>
-There is also a list of further <a href="http://nlp2rdf.org/publications">NIF-related scientific publications</a>.
-
-<!--
-Generic part END
--->
 
 <h2>NIF Service Implementation (NIF-SI)</h2>
 <p>NIF-SI may be implemented as Web Service (NIF-WS) and Command Line Interface (NIF-CLI). Bot must implement common parameters in the next section as well as each of the type-specific parameters. All parameters except <code>input</code> must have a sensible default implemented and thus must be omittable, when calling the implementation.</p>
@@ -200,21 +180,6 @@ logPrefix:id_ERROR_0_1377165120346
 
 
 
-<!--
-Generic part START
--->
-
-<h2>Author and Licence</h2>
-<p>This document is authored by <a href="http://bis.informatik.uni-leipzig.de/SebastianHellmann">Sebastian Hellman</a> from the AKSW research group.</p>
-
-<p>If you'd like to leave feedback, please <a href="https://github.com/NLP2RDF/specification/issues">open an issue on
-GitHub</a> or send an email to the <a href="http://lists.informatik.uni-leipzig.de/mailman/listinfo/nlp2rdf">mailing list</a></p>
-
-<p><a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons - CC BY 3.0</a>
- - The page design is taken from <a href="http://semver.org">http://semver.org</a></p>
-<!--
-Generic part END
--->
 
  </body>
 </html>
