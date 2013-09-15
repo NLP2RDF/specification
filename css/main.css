@@ -16,7 +16,10 @@ h1, h2, h3 { text-align: center; font-weight: normal; }
  h1 { font-size: 43px; margin: 1.1em 0 .7em; }
  h2 { margin: 2.1em 0 .7em; font-size: 24px; }
  h3 { text-align: left; font-size: 15.8px; margin-bottom: .6em; }
-
+ h3.param { font-size: 15.8px; font-weight: bold; }
+ 
+ 
+ 
 a { color: #009; }
 a:hover, a:focus { color: #000; }
 ol { padding-left: 1.5em; }
@@ -32,7 +35,7 @@ p { margin: 0 0 1em; }
 
 ol.nav {
   #background-color: #E5EECC;
-  background-color: #7AFC7E;
+  background-color: #004C99;
   #background-color: #333;
   list-style-type: none;
   margin: 0;
@@ -60,12 +63,24 @@ ol.lang li a {
 
 td.c{
 	text-align:center;
+	font-weight: bold;
+}
+
+
+# customized
+
+h3.param {
+font-size: 36px;
+font-weight: bold;
 }
 
 code{
-	background-color: #C2F7C4;
+	color: #004C99;
+	#background-color: #C6D5FF;
 }
+
 div.code{
-background-color: #C2F7C4;
+	#color: #5035FC;
+	background-color: #C6D5FF;
 
 }

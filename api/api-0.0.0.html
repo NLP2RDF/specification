@@ -2,7 +2,7 @@
 <html>
  <head>
   <meta charset="utf-8">
-  <title>NLP Interchange Format (NIF) 2.0 - Web Service Access Specification</title>
+  <title>Public API Specification - NIF 2.0</title>
   <meta name="author" content="Sebastian Hellmann">
   <link rel="stylesheet" href="css/main.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
@@ -28,21 +28,89 @@
 <h2>Summary</h2>
 <p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software (<a href="http://persistence.uni-leipzig.org/nlp2rdf">overview</a>), which are combined under the version identifier "NIF 2.0", but are <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">versioned individually</a>.</p>
 
-<p>This specification defines parameters for NIF service implementations (NIF-SI): Web Service (NIF-WS) and Command Line Interface (NIF-CLI)</p>
+<p>This specification complements the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/core.html" >NIF 2.0 Core specification</a> by specifying in detail how the interface for a NIF Implementation must behave. The focus here is on <b>how to access the tools</b> and web services and  <b>not</b> on what the transfered data contains. We distinguish Web Service (NIF-WS) and Command Line Interface (NIF-CLI) which are called in sum NIF Implementations (NIF-I).</p>
 
-<h2>NIF Service Implementation (NIF-SI)</h2>
-<p>NIF-SI may be implemented as Web Service (NIF-WS) or UNIX Command Line Interface (NIF-CLI) or both, but to call itself a NIF implementation either a NIF-WS or NIF-CLI implementation MUST exist. </p>
+<p>Overall this specification contains:
 <ul>
-<li>A NIF-SI MUST implement common parameters in the next sections.</li>
-<li>A NIF-SI MUST implement all parameters specific to NIF-WS or NIF-CLI respectively.</li>
-<li>A NIF-SI MUST implement all required values.</li>
-<li>A NIF-SI MUST implement the long and the short form.</li>
-<li>A NIF-SI MUST give an error message, if no <code>input</code> is given</li>
-<li>A NIF-SI MUST implement the specified default values and thus MUST be omittable, when calling the implementation.</li>
-<li>A NIF-SI MUST implement the specified default values and thus MUST be omittable, when calling the implementation.</li>
+<li>A conformance checklist telling you exactly what has to be implemented</li>
+<li>An example section, so you can get an idea, what this is all about</li>
+
+<li>NIF parameters, which all NIF tools must implement</li>
+<li>A HTTP Request and Response header mapping to these parameters</li>
+<li>Some additional parameters (informative)</li>
+<li>Log output of NIF tools (informative)</li>
+<li>A changelog</li>
 </ul>
-<h3>Example 1</h3>
-Piping text into NIF-SI of StanfordCoreNLP<br>
+</p>
+
+
+<h2>Conformance checklist</h2>
+In order to produce an interoperable implementation the following checklist must be followed:
+<ol>
+<li>A NIF Implementation MUST implement the given parameters (short and long, all values and the default):
+	<ul>
+	<li><code>input</code> (<code>i</code>). Values: depends on <code>informat</code> and <code>intype</code>. No default</li>
+	<li><code>informat</code> (<code>f</code>). Values: <code>text</code>, <code>turtle</code>, <code>rdfxml</code>. Default (WS and CLI): <code>turtle</code></li>
+	<li><code>intype</code> (<code>t</code>). Values: <code>direct</code>, <code>url</code>, <code>file</code> (only WS). Default (WS and CLI): <code>direct</code></li>
+	<li><code>input</code></li>
+	<li></li>
+	</ul>
+	A NIF Implementation MUST implement:
+	<ul>
+		<li>both the long form and the short form (in brackets)</li>
+		<li>ALL values given above values</li>
+		<li>the specified default</li>
+	</ul>
+</li>
+
+<li>A NIF Implementation MAY implement optional parameters. In this case, the parameter <code>info</code> or <code>info=true</code> MUST say which parameters are implemented.</li>
+<li>A NIF Implementation MUST not produce an error, if a parameter with an existing default value is omitted</li>
+<li>A NIF Implementation MUST give an error message, if no <code>input</code> data is given</li>
+<li>NIF-WS
+<ul><li>If a NIF-WS is started, it MUST accept the parameter <code>port</code>(default: <code>8896</code>) and then listen on this port and accept all NIF-WS parameters.</li></ul>
+</li>
+<li>NIF-CLI
+<ul><li>If <code>intype</code> is <code>direct</code>, then NIF-CLI MUST read from stdin, thus <code>input</code> can be omitted.</li></ul>
+</li>
+</ol>
+
+<h2>Working NIF Implementation Examples</h2>
+
+You can try out these examples, by downloading the NIF Stanford Core Release from: <a href="http://nlp2rdf.lod2.eu/releases/" target="_blank" >http://nlp2rdf.lod2.eu/releases/</a> (<a href="https://github.com/NLP2RDF/software/blob/master/php/nif-ws.php" target="_blank">Source Code</a> ) or using our provided demo webservice at: <a href="http://nlp2rdf.lod2.eu/nif-ws.php" target="_blank" >http://nlp2rdf.lod2.eu/nif-ws.php</a>(<a href="https://github.com/NLP2RDF/software/tree/master/java-maven/implementation/stanford-core" target="_blank">Source Code</a>). 
+
+<h3>NIF Web Service Examples</h3>
+<h4>Example for converting text to NIF using Curl and GET</h4>
+<div class="code"><pre>
+curl "http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text"
+# or
+curl --data-urlencode input="My dog likes eating sausage." -d informat=text "http://nlp2rdf.lod2.eu/nif-ws.php"
+# using Accept:
+curl --data-urlencode input="My dog likes eating sausage." -H "Accept: text/plain" "http://nlp2rdf.lod2.eu/nif-ws.php"
+</pre></div>
+
+<h4>Example using Curl and POST</h4>
+<div class="code"><pre>
+curl -X POST --data-urlencode input="My dog likes eating sausage." -d informat=text "http://nlp2rdf.lod2.eu/nif-ws.php"
+curl -X POST --data-urlencode input="My dog likes eating sausage." -H "Accept: text/plain" "http://nlp2rdf.lod2.eu/nif-ws.php"
+</pre></div>
+
+<h4>Example using the <code>prefix</code> parameter</h4>
+<div class="code"><pre>
+curl --data-urlencode input="My dog likes eating sausage." -d informat=text \
+   --data-urlencode prefix="http://example.org/nif#" "http://nlp2rdf.lod2.eu/nif-ws.php"
+curl --data-urlencode input="My dog likes eating sausage." -d informat=text \
+   --data-urlencode prefix="http://example.org/nif/" "http://nlp2rdf.lod2.eu/nif-ws.php"
+curl --data-urlencode input="My dog likes eating sausage." -d informat=text \
+   --data-urlencode prefix="http://example.org/nif?" "http://nlp2rdf.lod2.eu/nif-ws.php"
+# using md5("My dog likes eating sausage.") = 8346e39e6020879eeb8776309fa7f32c as prefix
+curl --data-urlencode input="My dog likes eating sausage." -d informat=text \
+   --data-urlencode prefix="http://example.org/8346e39e6020879eeb8776309fa7f32c#" "http://nlp2rdf.lod2.eu/nif-ws.php"
+</pre></div>
+
+
+<h3>NIF Command Line Examples</h3>
+<h4>Example for piping text into NIF-CLI (Stanford CoreNLP)</h4>
+
 <div class="code"><pre>
 # -f or --informat specifies the format (text, turtle, rdfxml)
 # -t or --intype specifies the input type (direct, file, url) 
@@ -53,7 +121,7 @@ echo "My dog also likes eating sausage." | java -jar stanfordNIF-beta.jar -f tex
 </pre></div>
 
 
-<h3>Example 2</h3>
+<h4>Example for reading text from file</h4>
 <div class="code"><pre>
 # -t or --intype specifies the input type (direct, file, url) 
 # -i or --input specifies the input
@@ -62,130 +130,140 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 </pre></div>
 
 
-<h2>Common Parameters (normative)</h2>	
+
+
+<h2>NIF Parameters (normative)</h2>	
 	<table border=1 >
 			<tr>
 				<th>Parameter</th>
 				<th>Description</th>
+			</tr>
+			<tr>
+				<td class="c">
+					<code>port</code><br>(no short form)<br>
+				</td>
+				<td>
+				   <h3 id="port" class="param">Port Number</h3>
+					<ul>
+						<li><b><code>8896</code>(default)</b> - starts the NIF-WS at port 8896</li>
+					</ul>
+				</td>
 			</tr>   
 			<tr>
+				
 				<td class="c">
-					<strong><code>input</code></strong><br><br>
-					OR<br><br>
-					<strong><code>i</code></strong><br>
+					<code>input</code>(<code>i</code>)
 				<td>
-					<h3 id="input"><strong>Input</strong><br/>
-						no default, this is the serialized data (i.e. the text or the NIF RDF)
-					</h3>
-					Since this parameter is the data which has to be processed by the tool, we require additional parameters to specify the data.
-					<b>Input Type</b> (see below) specifies how the data is retrieved (e.g. direct or via file). 
-					<b>Input Format</b> (see below) specifies in what format the retrieved data is (e.g. text or turtle or rdfxml). 
+					<h3 id="input" class="param" >Input</h3>
+					This is the serialized data (i.e. the text or the NIF RDF in Turtle, RDF/XML, etc.)
+					Since the value of the parameter contains the transfered data which has to be processed by the tool, we require additional parameters to specify the data. 
+					<b>Input Type</b> (see below) specifies how the data is retrieved (e.g. <code>direct</code>, <code>url</code> or via <code>file</code>). 
+					<b>Input Format</b> (see below) specifies in what format the retrieved data is (e.g. <code>text</code> or <code>turtle</code> or <code>rdfxml</code>). 
 				</td>
-			</tr>                     
+			</tr>    
+			          
 			<tr>
 				<td class="c">
-					<strong><code>informat</code></strong><br><br>
-					OR<br><br>
-					<strong><code>f</code></strong><br>
+					<code>informat</code>(<code>f</code>)
 				</td>
 				<td>
-					<h3 id="informat"><b>Input Format</b><br/>
-						NIF-WS default: <code>turtle</code><br/>
-						NIF-CLI default: <code>turtle</code>
-					</h3>
-					<ul><li>Determines in which format the <b>input</b> is given.</li>
-					<li>NIF-SI must accept values <code>text</code>, <code>turtle</code>, <code>rdfxml</code>. </li>
-					<li>NIF-WS MUST honor the "Content-Type: " HTTP Request Header as specified in the next section.</li>
-					<li>NIF-SI may additionally accept <code>ntriples</code>, <code>json</code>, <code>json-ld</code> <code>html</code>, <code>pdf</code> and otherrs.</li>
+					<h3 id="informat" class="param">Input Format</h3>
+					Determines in which format the <code>input</code> is given. Required values are:
+					<ul><li><b><code>turtle</code>(default, requires)</b> - RDF serialized as <a href="http://www.w3.org/TR/turtle/" target="_blank" >Turtle</a></li>
+						<li><code>rdfxml</code> - RDF serialized as <a href="http://www.w3.org/TR/rdf-syntax-grammar/" target="_blank" >RDF/XML</a></li>
+						<li><code>text</code> - plain text in UTF-8</li>
+					</ul>
+					
+					Further <b>optional</b> values are:
+					<ul>
+						<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
+						<li><code>ntriples</code> - RDF serialized as <a href="http://www.w3.org/TR/n-triples" target="_blank" >N-Triples</a> </li>
+						<li><code>html</code> - an HTML document</li>
+						<li><code>pdf</code> - a PDF document</li>
+						<li><code>opl</code> - one sentence per line format </li>
 					</ul>
 				</td>
 			</tr>
 			<tr>
 				<td class="c">
-					<strong><code>intype</code></strong><br><br>
-					OR<br><br>
-					<strong><code>t</code></strong><br>
+					<code>intype</code>(<code>t</code>)
 				</td>
 				<td>
-					<h3 id="intype"><strong>Input Type</strong><br/>
-						NIF-WS default: <code>direct</code><br/>
-						NIF-CLI default: <code>direct</code>
-					</h3>
-					Determines how the <b>input</b> is accessed or retrieved. Values are:
-					<ul>
-						<li><code>direct</code> - input is read from stdin or HTTP parameter (GET) or body (POST).</li>
-						<li><code>url</code> - NIF-SI retrieves the input from the URL. </li>
-						<li><code>file</code> - input is read from a local file (relative or absolute path) .</li>
-					</ul> 
-					NIF-WS MUST accept values <code>direct</code> and <code>url</code>.<br>
-					NIF-CLI MUST accept values <code>direct</code>, <code>url</code> and <code>file</code>.<br><br>
+					<h3 id="intype"><strong>Input Type</strong></h3>
 					
-					<strong>Note:</strong> NIF-CLI is expected to work on UNIX-like systems, e.g. <code>cat textfile.txt | java -jar nif-cli.jar --informat text </code>
+					Determines how <code>input</code> is accessed or retrieved. Values are:
+					<ul>
+						<li><b><code>direct</code>(default)</b> - input is read from stdin (NIF-CLI)  or via HTTP parameter using GET or POST (NIF-WS)</li>
+						<li><code>url</code> - the NIF implementation retrieves the input from the URL</li>
+						<li><code>file</code> (NIF-CLI only) - <code>input</code> is read from a local file (relative or absolute path) .</li>
+					</ul> 
+					
+					<strong>Note:</strong> NIF-CLI is expected to work on UNIX-like systems, e.g. <br>
+					<code>cat textfile.txt | java -jar nif-cli.jar --informat text </code>
 				</td>
-			</tr>
+			</tr>       
 			
 			<tr>
 				<td class="c">
-					<strong><code>outformat</code></strong><br><br>
-					OR<br><br>
-					<strong><code>o</code></strong><br>
+					<code>outformat</code>(<code>o</code>)
 				</td>
 				<td>
-					<h3 id="outformat"><strong>Output Format</strong><br/>
-						NIF-WS default: <code>turtle</code><br/>
-						NIF-CLI default: <code>turtle</code>
-					</h3>
-					Determines the format of the output.<br>
-					NIF-SI MUST accept values <code>text</code>, <code>turtle</code>, <code>rdfxml</code>. </br>
-					NIF-WS MUST honor the "Accept: " HTTP Request Header as specified in the next section.
+					<h3 id="outformat"><strong>Output Format</strong></h3>
+					The format in which the output is serialized.
+					<ul>
+						<li><b><code>turtle</code>(default)</b> - RDF serialized as <a href="http://www.w3.org/TR/turtle/" target="_blank" >Turtle</a></li>
+						<li><code>rdfxml</code> - RDF serialized as <a href="http://www.w3.org/TR/rdf-syntax-grammar/" target="_blank" >RDF/XML</a></li>
+						<li><code>text</code> - outputs the text in the isString properties for all contexts</li>
+					</ul>
 				</td>
 			</tr>
 			<tr>
 				<td class="c">
-					<strong><code>urischeme</code></strong><br><br>
-					OR<br><br>
-					<strong><code>u</code></strong><br>
+					<code>urischeme</code>(<code>u</code>)
 				</td>
 				<td>
-					<h3 id="urischeme">URI Scheme<br/>
-						NIF-WS default: <code>RFC5147String</code><br/>
-						NIF-CLI default: <code>RFC5147String</code>
-					</h3>
-					Determines the urischeme to be used.  <br>
-					NIF-SI MUST accept:<br>
+					<h3 id="urischeme">URI Scheme</h3>
+					The URI Scheme the NIF Implementation must use.
 					<ul>
-						<li>RFC5147String OR http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#RFC5147String</li>
-						<li>CStringInst OR http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#CStringInst</li>
-					</ul> 
-					NIF-SI MAY accept:<br>
+						<li><b><code>RFC5147String</code>(default)</b> - produces URIs of the form "<code>prefix</code>" + "char=x,y", where x is nif:beginIndex and y is nif:endIndex</li>
+						<li><code>CStringInst</code> - produces URIs of the form "<code>prefix</code>" + UUID</li>
+					</ul>
+					
+					Further <b>optional</b> values are:					
 					<ul>
-						<li>ContextHashBasedString OR http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#ContextHashBasedString</li>
-						<li>OffsetBasedString OR http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#OffsetBasedString</li>
+						<li><code>ContextHashBasedString</code> - produces URIs of the form "<code>prefix</code>" + "hash_cl_sl_md5_s"</li>
+						<li><code>OffsetBasedString</code> - produces URIs of the form "<code>prefix</code>" + "offset_x_y"</li>
+					</ul>
+
+
+					Long forms are:
+					<ul>
+						<li><code>http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#RFC5147String</code> - </li>
+						<li><code>http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#CStringInst</code> - </li>
+						<li><code>http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#ContextHashBasedString</code> - </li>
+						<li><code>http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#OffsetBasedString</code> - </li>
+					
 					</ul> 
 					
-					NIF-SI MAY implement additional urischemes (e.g. their own). If they do so they MUST only accept the full URI<br>
+					
+					A NIF Implementation MAY implement additional urischemes (e.g. their own). If they do so they MUST only accept the log form of this URI<br>
 				
 					
 				</td>
 			</tr>
 			<tr>
 				<td class="c">
-				   	<strong><code>prefix</code></strong><br><br>
-					OR<br><br>
-					<strong><code>p</code></strong><br>
+					<code>prefix</code>(<code>p</code>)
 				</td>
 				<td>
-					   <h3 id="prefix">Prefix<br/>
-						NIF-WS default: special<br/>
-						NIF-CLI default: special</code>
-					   </h3>
+					   <h3 id="prefix">Prefix</h3>
 						
-					   A prefix, which is used to create URIs. 
+					   The prefix, which the NIF Implementation MUST use to create and parse URIs. 
 					   <ol>
-					   <li>The NIF-SI MUST create any new URIs using this <code>prefix</code>.</li>
-					   <li>If the prefix is given the NIF-SI MUST use it to mint new URIs as-is, without any modification.</li>
-					   <li>The NIF-SI MUST concatenate the prefix with the identifier produced based on the <code>urischeme</code> parameter.</li>
-					   <li>If the parameter is missing it MUST be substituted by a sensible default (e.g. the web service URI or a hash over the text or a UUID).</li>
+						   <li>The NIF Implementation MUST create any new URIs using this <code>prefix</code>.</li>
+						   <li>If the prefix is given the NIF Implementation MUST use it to mint new URIs as-is, without any modification.</li>
+						   <li>The NIF Implementation MUST concatenate the prefix with the identifier produced based on the <code>urischeme</code> parameter.</li>
+						   <li>If the parameter is missing it MUST be substituted by a sensible default (e.g. the web service URI or a hash over the text or a UUID).</li>
 					   </ol>
 					   <h3>Examples</h3>
 					   <code>input</code> is "My dog likes eating sausage.";
@@ -227,57 +305,8 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 					   
 				</td>
 			</tr>
-			<tr>
-				<td class="c">
-				   	<strong><code>config</code></strong><br><br>
-					OR<br><br>
-					<strong><code>c</code></strong><br>
-				</td>
-				<td>
-				   <h3 id="config">Config<br/>
-						NIF-WS default: n/a<br/>
-						NIF-CLI default: n/a</code>
-					   </h3>
-					A string which can be used to configure the NIF-SI.
-					<ul>
-					 <li>No required values are specified for this parameter.</li>
-					 <li>What exactly the NIF-SI requires is left underspecified for now. Can be anything.</li>
-					 <li>If the NIF-SI requires configuration, it MUST use this parameter.</li>
-					</ul>
-				</td>
-			</tr>
-			<tr>
-				<td class="c">
-				   	<strong><code>configfile</code></strong><br><br>
-					OR<br><br>
-					<strong><code>cf</code></strong><br>
-				</td>
-				<td>
-				   <h3 id="configfile">Config File<br/>
-						NIF-WS default: n/a<br/>
-						NIF-CLI default: n/a<br>
-					   </h3>
-					A file which can be used to configure the NIF-SI.
-					<ul>
-					 <li>No required values are specified for this parameter.</li>
-					 <li>Same as <code>config</code>, but it is loaded from file.</li>
-					</ul>
-				</td>
-			</tr>
-			<tr>
-				<td class="c">
-				   	<strong><code>port</code></strong><br><br>
-					(no short form)<br><br>
-				</td>
-				<td>
-				   <h3 id="port">port<br/>
-						NIF-WS default: <code>8896</code><br/>
-						NIF-CLI default: <code>8896</code><br>
-					   </h3>
-					If implemented this parameter gives the port number of the web service. 
-					This parameter is used to start a NIF-WS implementations.
-				</td>
-			</tr>
+			
+			
 			
 			</table>
 			<h2>HTTP Request and Response header</h2>	
@@ -302,16 +331,54 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			<h2>Additional parameters (informative)</h2>
 			
 			<table border="1" >
+				
 			<tr>
 				<td class="c">
-					<strong><code>logprefix</code></strong><br><br>
-					OR<br><br>
-					<strong><code>lp</code></strong><br>
+					<code>help</code>(<code>h</code>)
 				</td>
-				<td> <h3 id="logprefix">Log Prefix<br/>
-						NIF-WS default: special<br/>
-						NIF-CLI default: special
-					   </h3>
+				<td>
+				   <h3 id="help" class="param">Help</h3>
+					Print help.
+					<ul>
+						<li><b><code>false</code>(default)</b> - nothing should happen, print no help, normal processing</li>
+						<li><code>true</code> - display help</li>
+					</ul>
+					TODO this parameter is still informative. No implementation necessary. 
+					If this parameter is "true", then some help is displayed. 
+				</td>
+			</tr>
+				<tr>
+				<td class="c">
+					<code>config</code>(<code>c</code>)
+				</td>
+				<td>
+				   <h3 id="config" class="param">Config</h3>
+					A string which can be used to configure the NIF Implementation.
+					<ul>
+					 <li>No required values are specified for this parameter.</li>
+					 <li>What exactly the NIF Implementation requires is left underspecified for now. Can be anything.</li>
+					 <li>If the NIF Implementation requires configuration, it MUST use this parameter.</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td class="c">
+					<code>configfile</code>(<code>cf</code>)
+				</td>
+				<td>
+				   <h3 id="configfile" class="param">Config File</h3>
+					A file which can be used to configure the NIF Implementation.
+					<ul>
+					 <li>No required values are specified for this parameter.</li>
+					 <li>Same as <code>config</code>, but it is loaded from file.</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td class="c">
+					<code>logprefix</code>(<code>lp</code>)
+				</td>
+				<td> <h3 id="logprefix" class="param">Log Prefix</h3>
 					TODO this parameter is still informative. No implementation necessary. 
 					Used to create prefix for log URIs in the same way as <code>prefix</code>. please use a sensible default. 
 				
@@ -319,60 +386,37 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			</tr>
 			<tr>
 				<td class="c">
-					<strong><code>profile</code></strong><br><br>
-					OR<br><br>
-					<strong><code>pf</code></strong><br>
+					<code>profile</code>(<code>pr</code>)
 				</td>
-				<td> <h3 id="profile">Profile<br/>
-						NIF-WS default: <code>simple</code><br/>
-						NIF-CLI default: <code>simple</code>
-					   </h3>
+				<td> <h3 id="profile">Profile</h3>
+					
+					<ul>
+						<li><b><code>simple</code>(default)</b> - produce annotations in the NIF Simple format</li>
+						<li><code>stanbol</code> - produce annotations in the NIF Stanbol format</li>
+						<li><code>oa</code> - produce annotations in the NIF OA format</li>
+					</ul>
 					TODO this parameter is still informative. No implementation necessary. 
 					It is used to swtich between different complexity profiles.
-					NIF-SI MAY accept values <code>simple</code>, <code>stanbol</code>, <code>oa</code>. </br>
+					NIF Implementation MAY accept values <code>simple</code>, <code>stanbol</code>, <code>oa</code>. </br>
 				
 				</td>
 			</tr>
 			<tr>
 				<td class="c">
-				   	<strong><code>uspara</code></strong><br><br>
-					OR<br><br>
-					<strong><code>up</code></strong><br>
+					<code>uspara</code>(<code>up</code>)
 				</td>
-				<td><h3 id="uspara">URI Scheme Parameters<br/>
-						NIF-WS default: n/a<br/>
-						NIF-CLI default: n/a</code>
-					   </h3>
+				<td><h3 id="uspara" class="param">URI Scheme Parameters</h3>
 					TODO this parameter is still informative. No implementation necessary. 
 					Some parameters for certain urischemes, e.g. contextlength
 				</td>
 			</tr>
+			
 			<tr>
 				<td class="c">
-				   	<strong><code>help</code></strong><br><br>
-					OR<br><br>
-					<strong><code>h</code></strong><br>
+					<code>outfile</code>(<code>of</code>)
 				</td>
 				<td>
-				   <h3 id="help">Help<br/>
-						NIF-WS default: false<br/>
-						NIF-CLI default: false</code>
-					   </h3>
-					TODO this parameter is still informative. No implementation necessary. 
-					If this parameter is "true", then some help is displayed. 
-				</td>
-			</tr>
-			<tr>
-				<td class="c">
-				   	<strong><code>outfile</code></strong><br><br>
-					OR<br><br>
-					<strong><code>of</code></strong><br>
-				</td>
-				<td>
-				   <h3 id="outfile">Output File<br/>
-						NIF-WS default: n/a<br/>
-						NIF-CLI default: n/a<br>
-					   </h3>
+				   <h3 id="outfile" class="param">Output File</h3>
 					A file into which results of NIF-CLI should be written.
 					Note: this option is for operating systems that do not use pipes. 
 				</td>
