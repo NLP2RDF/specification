@@ -32,7 +32,7 @@ p { margin: 0 0 1em; }
 
 ol.nav {
   #background-color: #E5EECC;
-  background-color: #617F10;
+  background-color: #7AFC7E;
   #background-color: #333;
   list-style-type: none;
   margin: 0;
@@ -62,3 +62,10 @@ td.c{
 	text-align:center;
 }
 
+code{
+	background-color: #C2F7C4;
+}
+div.code{
+background-color: #C2F7C4;
+
+}

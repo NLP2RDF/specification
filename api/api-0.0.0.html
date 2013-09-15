@@ -37,28 +37,29 @@
 <li>A NIF-SI MUST implement all parameters specific to NIF-WS or NIF-CLI respectively.</li>
 <li>A NIF-SI MUST implement all required values.</li>
 <li>A NIF-SI MUST implement the long and the short form.</li>
-<li>A NIF-SI MUST give an error message, if no <code>input</code> is given.</li>
+<li>A NIF-SI MUST give an error message, if no <code>input</code> is given</li>
+<li>A NIF-SI MUST implement the specified default values and thus MUST be omittable, when calling the implementation.</li>
 <li>A NIF-SI MUST implement the specified default values and thus MUST be omittable, when calling the implementation.</li>
 </ul>
 <h3>Example 1</h3>
 Piping text into NIF-SI of StanfordCoreNLP<br>
-<pre>
+<div class="code"><pre>
 # -f or --informat specifies the format (text, turtle, rdfxml)
 # -t or --intype specifies the input type (direct, file, url) 
 echo "My dog also likes eating sausage." | java -jar stanfordNIF-beta.jar -f text -t direct
 
 # -t can be omitted since direct is the default
 echo "My dog also likes eating sausage." | java -jar stanfordNIF-beta.jar -f text 
-</pre>
+</pre></div>
 
 
 <h3>Example 2</h3>
-<pre border="1">
+<div class="code"><pre>
 # -t or --intype specifies the input type (direct, file, url) 
 # -i or --input specifies the input
 echo "My dog also likes eating sausage." > text.txt
 java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
-</pre>
+</pre></div>
 
 
 <h2>Common Parameters (normative)</h2>	
@@ -69,9 +70,9 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			</tr>   
 			<tr>
 				<td class="c">
-					<strong>input</strong><br><br>
+					<strong><code>input</code></strong><br><br>
 					OR<br><br>
-					<strong>i</strong><br>
+					<strong><code>i</code></strong><br>
 				<td>
 					<h3 id="input"><strong>Input</strong><br/>
 						no default, this is the serialized data (i.e. the text or the NIF RDF)
@@ -83,9 +84,9 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			</tr>                     
 			<tr>
 				<td class="c">
-					<strong>informat</strong><br><br>
+					<strong><code>informat</code></strong><br><br>
 					OR<br><br>
-					<strong>f</strong><br>
+					<strong><code>f</code></strong><br>
 				</td>
 				<td>
 					<h3 id="informat"><b>Input Format</b><br/>
@@ -94,15 +95,16 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 					</h3>
 					<ul><li>Determines in which format the <b>input</b> is given.</li>
 					<li>NIF-SI must accept values <code>text</code>, <code>turtle</code>, <code>rdfxml</code>. </li>
-					<li>NIF-SI may additionally accept <code>ntriples</code>, <code>json</code>, <code>json-ld</code> <code>html</code>, <code>pdf</code> and others. </li>
+					<li>NIF-WS MUST honor the "Content-Type: " HTTP Request Header as specified in the next section.</li>
+					<li>NIF-SI may additionally accept <code>ntriples</code>, <code>json</code>, <code>json-ld</code> <code>html</code>, <code>pdf</code> and otherrs.</li>
 					</ul>
 				</td>
 			</tr>
 			<tr>
 				<td class="c">
-					<strong>intype</strong><br><br>
+					<strong><code>intype</code></strong><br><br>
 					OR<br><br>
-					<strong>t</strong><br>
+					<strong><code>t</code></strong><br>
 				</td>
 				<td>
 					<h3 id="intype"><strong>Input Type</strong><br/>
@@ -124,9 +126,9 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			
 			<tr>
 				<td class="c">
-					<strong>outformat</strong><br><br>
+					<strong><code>outformat</code></strong><br><br>
 					OR<br><br>
-					<strong>o</strong><br>
+					<strong><code>o</code></strong><br>
 				</td>
 				<td>
 					<h3 id="outformat"><strong>Output Format</strong><br/>
@@ -135,20 +137,14 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 					</h3>
 					Determines the format of the output.<br>
 					NIF-SI MUST accept values <code>text</code>, <code>turtle</code>, <code>rdfxml</code>. </br>
-					NIF-WS MUST honor the "Accept: " HTTP Request header as well as set the correct "Content-Type" HTTP response header for the following values:
-					<ul>
-						<li>text - text/plain</li>
-						<li>turtle - text/turtle</li>
-						<li>rdfxml - text/rdfxml</li>
-					</ul> 
-					Note that GET and POST overrides "Accept:". 
+					NIF-WS MUST honor the "Accept: " HTTP Request Header as specified in the next section.
 				</td>
 			</tr>
 			<tr>
 				<td class="c">
-					<strong>urischeme</strong><br><br>
+					<strong><code>urischeme</code></strong><br><br>
 					OR<br><br>
-					<strong>u</strong><br>
+					<strong><code>u</code></strong><br>
 				</td>
 				<td>
 					<h3 id="urischeme">URI Scheme<br/>
@@ -174,9 +170,9 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			</tr>
 			<tr>
 				<td class="c">
-				   	<strong>prefix</strong><br><br>
+				   	<strong><code>prefix</code></strong><br><br>
 					OR<br><br>
-					<strong>p</strong><br>
+					<strong><code>p</code></strong><br>
 				</td>
 				<td>
 					   <h3 id="prefix">Prefix<br/>
@@ -191,15 +187,51 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 					   <li>The NIF-SI MUST concatenate the prefix with the identifier produced based on the <code>urischeme</code> parameter.</li>
 					   <li>If the parameter is missing it MUST be substituted by a sensible default (e.g. the web service URI or a hash over the text or a UUID).</li>
 					   </ol>
-					   
+					   <h3>Examples</h3>
+					   <code>input</code> is "My dog likes eating sausage.";
+					   <ul>
+						<li><a href="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org%23" title="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org%23" target="_blank" >prefix=http://example.org%23</a></li>
+					   </ul>
+						<div class="code"><code>
+						&lt;http://example.org#char=0,28> <br>
+							  &emsp; rdf:type nif:RFC5147String ,
+                                        nif:Context ;<br>
+                              &emsp; nif:beginIndex "0" ;<br>
+                              &emsp; nif:endIndex "28" ;<br>
+                              &emsp; nif:isString "My dog likes eating sausage." .<br>
+						</code></div>
+						<ul>
+						<li><a href="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org/whatever/" title="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org/whatever/" target="_blank" >prefix=http://example.org/whatever/</a></li>
+					   </ul>
+						<div class="code"><code>
+						&lt;http://example.org/whatever/char=0,28> <br>
+										 &emsp; rdf:type nif:RFC5147String ,
+                                                 nif:Context ;<br>
+                                         &emsp; nif:beginIndex "0" ;<br>
+                                         &emsp; nif:endIndex "28" ;<br>
+                                         &emsp; nif:isString "My dog likes eating sausage." .<br>
+						
+						</code></div>
+						<ul>
+						<li><a href="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org/nif%3F" title="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org/nif%3F" target="_blank" >prefix=http://example.org/nif%3F</a></li>
+					   </ul>
+						<div class="code"><code>
+						&lt;http://example.org/nif?char=0,28> <br>
+										 &emsp; rdf:type nif:RFC5147String ,
+                                                 nif:Context ;<br>
+                                         &emsp; nif:beginIndex "0" ;<br>
+                                         &emsp; nif:endIndex "28" ;<br>
+                                         &emsp; nif:isString "My dog likes eating sausage." .<br>
+						
+						</code></div>
 					   
 				</td>
 			</tr>
 			<tr>
 				<td class="c">
-				   	<strong>config</strong><br><br>
+				   	<strong><code>config</code></strong><br><br>
 					OR<br><br>
-					<strong>c</strong><br>
+					<strong><code>c</code></strong><br>
 				</td>
 				<td>
 				   <h3 id="config">Config<br/>
@@ -216,9 +248,9 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			</tr>
 			<tr>
 				<td class="c">
-				   	<strong>configfile</strong><br><br>
+				   	<strong><code>configfile</code></strong><br><br>
 					OR<br><br>
-					<strong>cf</strong><br>
+					<strong><code>cf</code></strong><br>
 				</td>
 				<td>
 				   <h3 id="configfile">Config File<br/>
@@ -232,31 +264,80 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 					</ul>
 				</td>
 			</tr>
+			<tr>
+				<td class="c">
+				   	<strong><code>port</code></strong><br><br>
+					(no short form)<br><br>
+				</td>
+				<td>
+				   <h3 id="port">port<br/>
+						NIF-WS default: <code>8896</code><br/>
+						NIF-CLI default: <code>8896</code><br>
+					   </h3>
+					If implemented this parameter gives the port number of the web service. 
+					This parameter is used to start a NIF-WS implementations.
+				</td>
+			</tr>
+			
 			</table>
+			<h2>HTTP Request and Response header</h2>	
+			<h3>Accept and Content-Type</h3>
+			NIF-WS implementations MUST accept HTTP Request Headers as substitute for <code>informat</code> and <code>outformat</code>.
+			NIF-WS implementations MUST set the appropriate <code>Content-Type: </code> Header.<br>
+			
+			The following mapping applies for the Accept Request Header:
+			<ul>
+				<li><code>outformat=text</code> is the same as <code>Accept: text/plain</code></li>
+				<li><code>outformat=turtle</code> is the same as <code>Accept: text/plain</code></li>
+				<li><code>outformat=rdfxml</code> is the same as <code>Accept: application/rdf+xml</code></li>
+			</ul> 
+			and for the Content-Type Request Header: 
+			<ul>
+				<li><code>informat=text</code> is the same as <code>Content-Type: text/plain</code></li>
+				<li><code>informat=turtle</code> is the same as <code>Content-Type: text/plain</code></li>
+				<li><code>informat=rdfxml</code> is the same as <code>Content-Type: application/rdf+xml</code></li>
+			</ul> 
+			
 			
 			<h2>Additional parameters (informative)</h2>
 			
 			<table border="1" >
 			<tr>
 				<td class="c">
-					<strong>logprefix</strong><br><br>
+					<strong><code>logprefix</code></strong><br><br>
 					OR<br><br>
-					<strong>lp</strong><br>
+					<strong><code>lp</code></strong><br>
 				</td>
 				<td> <h3 id="logprefix">Log Prefix<br/>
 						NIF-WS default: special<br/>
-						NIF-CLI default: special</code>
+						NIF-CLI default: special
 					   </h3>
 					TODO this parameter is still informative. No implementation necessary. 
-					Used to create prefix for log URIs. please use a sensible default. 
+					Used to create prefix for log URIs in the same way as <code>prefix</code>. please use a sensible default. 
 				
 				</td>
 			</tr>
 			<tr>
 				<td class="c">
-				   	<strong>uspara</strong><br><br>
+					<strong><code>profile</code></strong><br><br>
 					OR<br><br>
-					<strong>up</strong><br>
+					<strong><code>pf</code></strong><br>
+				</td>
+				<td> <h3 id="profile">Profile<br/>
+						NIF-WS default: <code>simple</code><br/>
+						NIF-CLI default: <code>simple</code>
+					   </h3>
+					TODO this parameter is still informative. No implementation necessary. 
+					It is used to swtich between different complexity profiles.
+					NIF-SI MAY accept values <code>simple</code>, <code>stanbol</code>, <code>oa</code>. </br>
+				
+				</td>
+			</tr>
+			<tr>
+				<td class="c">
+				   	<strong><code>uspara</code></strong><br><br>
+					OR<br><br>
+					<strong><code>up</code></strong><br>
 				</td>
 				<td><h3 id="uspara">URI Scheme Parameters<br/>
 						NIF-WS default: n/a<br/>
@@ -268,9 +349,9 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			</tr>
 			<tr>
 				<td class="c">
-				   	<strong>help</strong><br><br>
+				   	<strong><code>help</code></strong><br><br>
 					OR<br><br>
-					<strong>h</strong><br>
+					<strong><code>h</code></strong><br>
 				</td>
 				<td>
 				   <h3 id="help">Help<br/>
@@ -281,31 +362,48 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 					If this parameter is "true", then some help is displayed. 
 				</td>
 			</tr>
+			<tr>
+				<td class="c">
+				   	<strong><code>outfile</code></strong><br><br>
+					OR<br><br>
+					<strong><code>of</code></strong><br>
+				</td>
+				<td>
+				   <h3 id="outfile">Output File<br/>
+						NIF-WS default: n/a<br/>
+						NIF-CLI default: n/a<br>
+					   </h3>
+					A file into which results of NIF-CLI should be written.
+					Note: this option is for operating systems that do not use pipes. 
+				</td>
+			</tr>
 	</table>
+	
+
 
 <h2>RLOG - an RDF Logging Ontology (informative)</h2>
 For NIF we have created our own Logging Ontology - RLOG. It is available at <a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#</a>. The ontology is very simple, but it covers the NIF use case very well. As of now, we have not discovered any missing features. RLOG can be combined with the <a href="http://www.w3.org/TR/prov-o/"> W3C Provenance Ontology</a>. The logging has to follow this pattern: 
-<pre>@prefix rlog: &lt;http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#&gt; .
-@prefix logprefix: &lt;http://example.org/user-defined-logPrefix#&gt; .
-logprefix:user-defined-urn
-	a rlog:Entry ;
-	rlog:level rlog:ERROR ;
-	rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;
-	rlog:message "Log message" ;
-	# optional:
-	rlog:resource  &lt;http://example.com/RDF-resource&gt; . </pre> 
+<div class="code"><code>@prefix rlog: &lt;http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#&gt; .<br>
+@prefix logprefix: &lt;http://example.org/user-defined-logPrefix#&gt; .<br>
+logprefix:user-defined-urn<br>
+	 &emsp; a rlog:Entry ;<br>
+	 &emsp; rlog:level rlog:ERROR ;<br>
+	 &emsp; rlog:date "2013-06-08T17:00:00Z"^^xsd:datetime ;<br>
+	 &emsp; rlog:message "Log message" ;<br>
+	 &emsp; # optional:<br>
+	 &emsp; rlog:resource  &lt;http://example.com/RDF-resource&gt; . </code></div> 
 	
 Here is an example produced by the <a href="https://github.com/NLP2RDF/software#nif-validator" >NIF validator</a>:
-<pre># default prefix, non dereferencable
-@prefix logprefix: &lt;http://nlp2rdf.lod2.eu/instance/log/&gt; .
-# arbitrary id at the moment. 
-logprefix:id_ERROR_0_1377165120346
-        a              rlog:Entry ;
-        rlog:date      "2013-08-22T09:52:00.347Z"^^xsd:dateTime ;
-        rlog:level     rlog:ERROR ;
-        rlog:message   """http://example.com/error4.txt#char=1,25: for the context,
-                          the length of nif:isString (27) must equal nif:endIndex (25)""" ;
-        rlog:resource  &lt;http://example.com/error4.txt#char=1,25&gt; .</pre> 
+<div class="code"><code># default prefix, non dereferencable<br>
+@prefix logprefix: &lt;http://nlp2rdf.lod2.eu/instance/log/&gt; .<br>
+# arbitrary id at the moment. <br>
+logprefix:id_ERROR_0_1377165120346<br>
+        &emsp; a              rlog:Entry ;<br>
+        &emsp; rlog:date      "2013-08-22T09:52:00.347Z"^^xsd:dateTime ;<br>
+        &emsp; rlog:level     rlog:ERROR ;<br>
+        &emsp; rlog:message   """http://example.com/error4.txt#char=1,25: for the context, the length of nif:isString (27) must equal nif:endIndex (25)""" ;<br>
+        &emsp; rlog:resource  &lt;http://example.com/error4.txt#char=1,25&gt; .</code></div>
+
 
 <div id="about"></div>
 
