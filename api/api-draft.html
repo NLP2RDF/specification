@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
  <head>
+  <base target="_parent"/> 
   <meta charset="utf-8">
   <title>Public API Specification - NIF 2.0</title>
   <meta name="author" content="Sebastian Hellmann">
@@ -28,7 +29,8 @@
 <h2>Summary</h2>
 <p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software (<a href="http://persistence.uni-leipzig.org/nlp2rdf">overview</a>), which are combined under the version identifier "NIF 2.0", but are <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">versioned individually</a>.</p>
 
-<p>This specification complements the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/core.html" >NIF 2.0 Core specification</a> by specifying in detail how the interface for a NIF Implementation must behave. The focus here is on <b>how to access the tools</b> and web services and  <b>not</b> on what the transfered data contains. We distinguish Web Service (NIF-WS) and Command Line Interface (NIF-CLI) which are called in sum NIF Implementations (NIF-I).</p>
+<p>This specification complements the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/core.html" >NIF 2.0 Core specification</a> by specifying in detail how the interface for a NIF Implementation must behave. The focus here is on <b>how to access the tools</b> and web services and  <b>not</b> on what the transfered data contains. We distinguish Web Service (NIF-WS) and Command Line Interface (NIF-CLI) which are called in sum NIF Implementations.
+Note that only the parameter <code>input</code> is required during a request. If this document mentions "required" parameters, it means that in order to be introperable with other NIF Implementations and clients, you are required to implement this parameter in your NIF Implementation. </p>
 
 <p>Overall this specification contains:
 <ul>
@@ -45,6 +47,10 @@
 
 
 <h2>Conformance checklist</h2>
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in <a href="http://www.ietf.org/rfc/rfc2119.txt" target="_blank" >RFC 2119</a>.
+
+
+
 In order to produce an interoperable implementation the following checklist must be followed:
 <ol>
 <li>A NIF Implementation MUST implement the given parameters (short and long, all values and the default):
@@ -52,8 +58,10 @@ In order to produce an interoperable implementation the following checklist must
 	<li><code>input</code> (<code>i</code>). Values: depends on <code>informat</code> and <code>intype</code>. No default</li>
 	<li><code>informat</code> (<code>f</code>). Values: <code>text</code>, <code>turtle</code>, <code>rdfxml</code>. Default (WS and CLI): <code>turtle</code></li>
 	<li><code>intype</code> (<code>t</code>). Values: <code>direct</code>, <code>url</code>, <code>file</code> (only WS). Default (WS and CLI): <code>direct</code></li>
-	<li><code>input</code></li>
-	<li></li>
+	<li><code>outformat</code> (<code>o</code>). Values: <code>turtle</code>, <code>rdfxml</code>, <code>text</code>. Default (WS and CLI): <code>turtle</code></li>
+	<li><code>urischeme</code> (<code>u</code>). Values: <code>RFC5147String</code>, <code>CStringInst</code>. Default (WS and CLI): <code>RFC5147String</code></li>
+	<li><code>prefix</code> (<code>p</code>). Values: special. Default (WS and CLI): something sensible</li>
+	<li><code>apikey</code> (<code>k</code>). Values: special. Default (WS and CLI): n/a</li>
 	</ul>
 	A NIF Implementation MUST implement:
 	<ul>
@@ -174,13 +182,14 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 						<li><code>text</code> - plain text in UTF-8</li>
 					</ul>
 					
-					Further <b>optional</b> values are:
+					Furthermore, these <b>optional</b> values MAY be implemented:
 					<ul>
 						<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
 						<li><code>ntriples</code> - RDF serialized as <a href="http://www.w3.org/TR/n-triples" target="_blank" >N-Triples</a> </li>
 						<li><code>html</code> - an HTML document</li>
 						<li><code>pdf</code> - a PDF document</li>
 						<li><code>opl</code> - one sentence per line format </li>
+						<li><code>timedtext</code> - one sentence per line format </li>
 					</ul>
 				</td>
 			</tr>
@@ -215,6 +224,18 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 						<li><code>rdfxml</code> - RDF serialized as <a href="http://www.w3.org/TR/rdf-syntax-grammar/" target="_blank" >RDF/XML</a></li>
 						<li><code>text</code> - outputs the text in the isString properties for all contexts</li>
 					</ul>
+					
+					Furthermore, these <b>optional</b> values MAY be implemented:					
+					<ul>
+						<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
+						<li><code>ntriples</code> - RDF serialized as <a href="http://www.w3.org/TR/n-triples" target="_blank" >N-Triples</a> </li>
+						<li><code>html</code> - HTML will be serialized using <a href="http://www.w3.org/TR/its20/" target="_blank">ITS 2.0 by W3C</a> </li>
+						<li><code>rdfa</code> - using RDFa. How this RDFa could look like is unknown and often not feasible. </li>
+						
+						<li><code>xml</code> - custom xml format </li>
+						<li><code>json</code> - custom json format </li>
+					</ul>
+					
 				</td>
 			</tr>
 			<tr>
@@ -229,7 +250,7 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 						<li><code>CStringInst</code> - produces URIs of the form "<code>prefix</code>" + UUID</li>
 					</ul>
 					
-					Further <b>optional</b> values are:					
+					Furthermore, these <b>optional</b> values MAY be implemented:				
 					<ul>
 						<li><code>ContextHashBasedString</code> - produces URIs of the form "<code>prefix</code>" + "hash_cl_sl_md5_s"</li>
 						<li><code>OffsetBasedString</code> - produces URIs of the form "<code>prefix</code>" + "offset_x_y"</li>
@@ -305,28 +326,78 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 					   
 				</td>
 			</tr>
-			
+			<tr>
+				<td class="c">
+					<code>apikey</code>(<code>k</code>)
+				</td>
+				<td>
+					<h3 id="apikey"><strong>Api Key</strong></h3>
+					
+					If access is limited, the client MUST use this parameter to give its authentication token or api key.
+					
+					<strong>Note:</strong> If your NIF Implementation doesn't require authentification, this parameter SHOULD be ignored. 
+				</td>
+			</tr>      
 			
 			
 			</table>
-			<h2>HTTP Request and Response header</h2>	
-			<h3>Accept and Content-Type</h3>
+			<h2>HTTP Headers and Status Codes (normative)</h2>	
+			<h3>HTTP Request and Response Headers</h3>
 			NIF-WS implementations MUST accept HTTP Request Headers as substitute for <code>informat</code> and <code>outformat</code>.
-			NIF-WS implementations MUST set the appropriate <code>Content-Type: </code> Header.<br>
+			NIF-WS implementations MUST always set the appropriate <code>Content-Type: </code> Header.<br>
 			
-			The following mapping applies for the Accept Request Header:
+			The following mapping applies for the <code>informat</code> and <code>outformat</code> to media types:
 			<ul>
-				<li><code>outformat=text</code> is the same as <code>Accept: text/plain</code></li>
-				<li><code>outformat=turtle</code> is the same as <code>Accept: text/plain</code></li>
-				<li><code>outformat=rdfxml</code> is the same as <code>Accept: application/rdf+xml</code></li>
-			</ul> 
-			and for the Content-Type Request Header: 
-			<ul>
-				<li><code>informat=text</code> is the same as <code>Content-Type: text/plain</code></li>
-				<li><code>informat=turtle</code> is the same as <code>Content-Type: text/plain</code></li>
-				<li><code>informat=rdfxml</code> is the same as <code>Content-Type: application/rdf+xml</code></li>
+				<li><code>text</code> is the same as <code>text/plain</code></li>
+				<li><code>turtle</code> is the same as <code>text/turtle</code></li>
+				<li><code>html</code> is the same as <code>text/html</code></li>
+				<li><code>rdfxml</code> is the same as <code>application/rdf+xml</code></li>
+				<li><code>ntriples</code> is the same as <code>application/n-triples</code> (we use the latest spec as <a href="http://www.w3.org/TR/n-triples/" >source</a>)</li>
+				<li><code>json-ld</code> is the same as <code>application/ld+json</code></li>
+				<li><code>timedtext</code> is the same as <code>application/ttml+xml</code></li>
+				<li><code>xml</code> is the same as <code>application/xml</code></li>
+				
 			</ul> 
 			
+			<h3>HTTP Status Codes(Informative)</h3>	
+			The NIF Implementation MAY return the following HTTP status codes:
+			<table border=1>
+			<tr>
+				<td>Code</td>
+				<td>Text</td>
+				<td>Description</td>
+			</tr>
+			<tr>
+				<td>200</td>
+				<td>OK</td>
+				<td>Success!</td>
+			</tr>
+			<tr>
+				<td>400</td>
+				<td>Bad Request </td>
+				<td>The request was invalid. An accompanying error message will explain why. </td>
+			</tr>
+			<tr>
+				<td>401</td>
+				<td>Unauthorized</td>
+				<td>Authentication credentials were missing or incorrect. </td>
+			</tr>
+			<tr>
+				<td>406</td>
+				<td>Not Acceptable </td>
+				<td>Returned by the API when an invalid format is specified in the request.  </td>
+			</tr>
+			<tr>
+				<td>500</td>
+				<td>Internal Server Error</td>
+				<td>Something is broken. Contacting the maintainer might be appropriate. </td>
+			</tr>
+			<tr>
+				<td>503</td>
+				<td>Service Unavailable</td>
+				<td>The server is currently unable to handle the request due to a temporary overloading or maintenance of the server. </td>
+			</tr>
+			</table>
 			
 			<h2>Additional parameters (informative)</h2>
 			
@@ -448,6 +519,8 @@ logprefix:id_ERROR_0_1377165120346<br>
         &emsp; rlog:message   """http://example.com/error4.txt#char=1,25: for the context, the length of nif:isString (27) must equal nif:endIndex (25)""" ;<br>
         &emsp; rlog:resource  &lt;http://example.com/error4.txt#char=1,25&gt; .</code></div>
 
+
+<h2>Cangelog</h2>
 
 <div id="about"></div>
 <noscript><br><br><iframe border="0" src="http://persistence.uni-leipzig.org/nlp2rdf/specification/about.html" width="100%" height="800" seamless></iframe></noscript> 
