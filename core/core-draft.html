@@ -7,7 +7,14 @@
   <link rel="stylesheet" href="css/main.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
    <script src="js/jquery-1.10.2.min.js"></script> 
-    <script> 
+   <script src="js/jquery-litelighter.js"></script> 
+   <script src="js/jquery-litelighter-extra.js"></script> 
+   <script> 
+     $(document).ready(function(){
+            // all you need to get started
+            $('pre').litelighter({style:'dark'});
+
+        });
     $(function(){
       $("#about").load("http://persistence.uni-leipzig.org/nlp2rdf/specification/about.html"); 
     });
@@ -28,23 +35,42 @@
 
 <p>This document specifies the core of NIF, consisting of:</p>
 <ul>
+<li>A conformance checklist telling you exactly what has to be implemented</li>
 <li>The initial conversion of text to NIF and how to assign URIs to Unicode Strings, so you can annotate them.</li>
-<li>The </li>
 <li></li>
 <li></li>
 <li></li>
 </ul>
 
 
+<h2>Conformance checklist</h2>
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in <a href="http://www.ietf.org/rfc/rfc2119.txt" target="_blank" >RFC 2119</a>.
+<div class="example-code">
+<pre class="code" data-lllanguage="generic">
+&lt;http://example.org#char=0,28>
+		  &emsp; rdf:type nif:RFC5147String , nif:Context ;
+		  &emsp; nif:beginIndex "0" ;
+		  &emsp; nif:endIndex "28" ;
+		  &emsp; nif:isString "My dog likes eating sausage." .</pre></div>			
+		  <div class="example-code">
+<pre data-lllanguage="generic" class="code" style="background-color:#141414;color:#ffffff;"><span style="color:#fee79e;" class="litelighterstyle">&lt;</span>http:<span style="color:#999" class="litelighterstyle">//example.org#char=0,28&gt;</span>
+          &emsp; rdf:type nif:RFC<span style="color:#CF6745;" class="litelighterstyle">5147</span>String , nif:Context ;
+          &emsp; nif:beginIndex <span style="color:#8F9657" class="litelighterstyle">"0"</span> ;
+          &emsp; nif:endIndex <span style="color:#8F9657" class="litelighterstyle">"28"</span> ;
+          &emsp; nif:isString <span style="color:#8F9657" class="litelighterstyle">"My dog likes eating sausage."</span> <span style="color:#fee79e;" class="litelighterstyle">.</span></pre></div>
 
-
-<h2>Overview</h2>
-Each section below describes one aspect of NIF 2.0. 
+In order to produce an interoperable implementation the following checklist must be followed:
+<ol>
+<li>All text for NIF MUST be encoded using Unicode Normal Form C, especially if the text occurrs in RDF Literals.</li>
+<li>All NIF Implementations that expose their interfaces via web service or command line MUST implement the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html" >Public API Specification of NIF 2.0</a>.</li>
+</ol>
 
 <h2>Creation</h2>
-<p>NIF is primarily used for text annotation. In order to enter the NIF and RDF world, your text must be converted to an RDF literal as an object of the nif:isString property:
-<code>&lt;SubjectURI&gt; nif:isString "Your text, e.g. an article or a sentence; bascially any sequence of characters." .</code>
+<p>NIF is primarily used for text annotation. In order to enter the NIF and RDF world, your text must be converted to an RDF literal as an object of the nif:isString property:</p>
 
+<div class="example-code"><pre class="code" data-lllanguage="generic">&lt;SubjectURI&gt; nif:isString "Your text, e.g. an article or a sentence; bascially any sequence of characters." .</pre></div>
+
+<p>
 According to the RDF specification (<a href="https://dvcs.w3.org/hg/rdf/raw-file/default/rdf-concepts/index.html#section-Graph-Literal">RDF 3.3 Literals</a>),  RDF literals are Unicode strings, which should be in Normal Form C. NIF is stricter and requires that any implementor must use Normal Form C. This is necessary as virtually all NLP tools depend on string length counts and order of code units of characters. 
 </p>
 
