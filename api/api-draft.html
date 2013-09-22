@@ -61,13 +61,18 @@ In order to produce an interoperable implementation the following checklist must
 <ol>
 <li>A NIF Implementation MUST implement the given parameters (short and long, all values and the default):
 	<ul>
-	<li><code>input</code> (<code>i</code>). depends on <code>informat</code> and <code>intype</code>. No default.</li>
+	<li><code>input</code> (<code>i</code>):
+		<ul>
+			<li>No default</li>
+			<li>Depends on <code>informat</code> and <code>intype</code></li>
+			<li>NIF-CLI MUST read from stdin, if <code>input</code> is "-" ("--input -" or "-i -" )</li>
+		</ul>
 	<li><code>informat</code> (<code>f</code>): 
 		<ul>
 			<li><code>turtle</code> (default)</li>
-			<li><code>json-ld</code></li>
 			<li><code>text</code></li>
 		</ul>
+		Note that <code>json-ld</code> is scheduled to be included, if enough implementations exist.
 	</li>
 	<li><code>intype</code> (<code>t</code>): 
 		<ul>
@@ -75,13 +80,14 @@ In order to produce an interoperable implementation the following checklist must
 			<li><code>url</code></li>
 			<li><code>file</code>(only CLI)</li>
 		</ul>
+		
 	</li>
 	<li><code>outformat</code> (<code>o</code>):
 		<ul>
 			<li><code>turtle</code> (default)</li>
-			<li><code>json-ld</code></li>
 			<li><code>text</code></li>
 		</ul>
+		Note that <code>json-ld</code> is scheduled to be included, if enough implementations exist.
 	</li>
 	<li><code>urischeme</code> (<code>u</code>):  
 		<ul>
@@ -90,7 +96,6 @@ In order to produce an interoperable implementation the following checklist must
 		</ul>
 	</li>
 	<li><code>prefix</code> (<code>p</code>): free parameter; SHOULD implement a sensible default</li>
-	<li><code>apikey</code> (<code>k</code>): free parameter</li>
 	</ul>
 	A NIF Implementation MUST implement:
 	<ul>
@@ -100,7 +105,7 @@ In order to produce an interoperable implementation the following checklist must
 	</ul>
 </li>
 
-<li>A NIF Implementation MAY implement optional parameters and values. In this case, the parameter <code>info</code> or <code>info=true</code> SHOULD say which parameters are implemented.</li>
+<li>A NIF Implementation MAY implement optional parameters and values. In this case, the parameter <code>info</code> or <code>info=true</code> or <code>help</code>SHOULD say which parameters are implemented.</li>
 <li>NIF Implementations SHOULD implement the values <code>ntriples</code>, <code>rdfxml</code> for the parameter <code>informat</code> and <code>outformat</code>, if it does not require a lot of extra work (e.g built-in by the used RDF library).</li>
 <li>A NIF Implementation MUST not produce an error, if a parameter with an existing default value is omitted.</li>
 <li>A NIF Implementation MUST give an error message, if no <code>input</code> data is given.</li>
@@ -108,9 +113,10 @@ In order to produce an interoperable implementation the following checklist must
 
 <h3>NIF-WS: Additional requirements</h3>
 	<ol>
-		<li>If a NIF-WS is started from the command line, it MUST accept the parameter <code>port</code>(default: <code>8896</code>) and then listen on this port and accept all NIF-WS parameters.</li>
+	
 		<li>NIF-WS MUST implement "Content-Type" and "Accept" Headers as specified in Section "HTTP Request and Response Headers (Normative)"</li>
 		<li>NIF-WS MAY implement HTTP Status Codes as specified in Section "HTTP Status Codes (Informative)"</li>
+		<li>If a NIF-WS is started from the command line, it MAY accept the parameter <code>port</code>(default: <code>8899</code>) and then listen on this port and accept all NIF-WS parameters.</li>
 	</ol>
 	
 <h3>NIF-CLI: Additional requirements</h3>
@@ -128,27 +134,22 @@ In order to produce an interoperable implementation the following checklist must
 				<th>Parameter</th>
 				<th>Description</th>
 			</tr>
-			<tr>
-				<td class="c">
-					<code>port</code><br>(no short form)<br>
-				</td>
-				<td>
-				   <h3 id="port" class="param">Port Number</h3>
-					<ul>
-						<li><b><code>8896</code>(default)</b> - starts the NIF-WS at port 8896</li>
-					</ul>
-				</td>
-			</tr>   
+			
 			<tr>
 				
 				<td class="c">
 					<code>input</code>(<code>i</code>)
 				<td>
 					<h3 id="input" class="param" >Input</h3>
-					This is the serialized data (i.e. the text or the NIF RDF in Turtle, RDF/XML, etc.)
-					Since the value of the parameter contains the transfered data which has to be processed by the tool, we require additional parameters to specify the data. 
+					This is the serialized data (i.e. the text or the NIF RDF in Turtle or other formats)
+					Since the value of the parameter contains the transfered data which has to be processed by the tool, we require additional parameters to specify the data.  
 					<b>Input Type</b> (see below) specifies how the data is retrieved (e.g. <code>direct</code>, <code>url</code> or via <code>file</code>). 
-					<b>Input Format</b> (see below) specifies in what format the retrieved data is (e.g. <code>text</code> or <code>turtle</code> or <code>rdfxml</code>). 
+					<b>Input Format</b> (see below) specifies in what format the retrieved data is (e.g. <code>text</code> or <code>turtle</code> or <code>json-ld</code>). 
+					NIF-CLI: If <code>intype</code> is <code>direct</code>, and input is "-", then NIF-CLI MUST read from stdin:
+					<div class="example-code">
+					<pre class="code" data-lllanguage="generic">echo -n "My favourite actress is Natalie Portman."  | java -jar nif-cli.jar --informat text -i - </pre>
+					</div>
+					
 				</td>
 			</tr>    
 			          
@@ -161,14 +162,16 @@ In order to produce an interoperable implementation the following checklist must
 					Determines in which format the <code>input</code> is given. Required values are:
 					<ul>
 						<li><b><code>turtle</code>(default)</b> - RDF serialized as <a href="http://www.w3.org/TR/turtle/" target="_blank" >Turtle</a></li>
-						<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
+						
 						<li><code>text</code> - plain text in UTF-8</li>
 					</ul>
+					
+					Note that <code>json-ld</code> is scheduled to be included, if enough implementations exist.
 					
 					Furthermore, these <b>optional</b> values MAY be implemented:
 					<ul>
 						<li><code>rdfxml</code> - RDF serialized as <a href="http://www.w3.org/TR/rdf-syntax-grammar/" target="_blank" >RDF/XML</a></li>
-						
+						<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
 						<li><code>ntriples</code> - RDF serialized as <a href="http://www.w3.org/TR/n-triples" target="_blank" >N-Triples</a> </li>
 						<li><code>html</code> - an HTML document</li>
 						<li><code>pdf</code> - a PDF document</li>
@@ -191,12 +194,8 @@ In order to produce an interoperable implementation the following checklist must
 						<li><code>file</code> (NIF-CLI only) - <code>input</code> is read from a local file (relative or absolute path) .</li>
 					</ul> 
 					
-					<strong>Note:</strong> NIF-CLI is expected to work on UNIX-like systems, e.g. <br>
-					<div class="example-code">
-					<pre class="code" data-lllanguage="generic">cat textfile.txt | java -jar nif-cli.jar --informat text 
-					</pre>
-					</div>
-					<code></code>
+					<strong>Note:</strong> NIF-CLI is expected to work on UNIX-like systems:<br>
+					<div class="example-code"><pre class="code" data-lllanguage="generic">cat textfile.txt | java -jar nif-cli.jar --informat text --input -</pre></div>
 				</td>
 			</tr>       
 			
@@ -209,13 +208,15 @@ In order to produce an interoperable implementation the following checklist must
 					The format in which the output is serialized.
 					<ul>
 						<li><b><code>turtle</code>(default)</b> - RDF serialized as <a href="http://www.w3.org/TR/turtle/" target="_blank" >Turtle</a></li>
-						<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
 						<li><code>text</code> - outputs the text in the isString properties for all contexts</li>
 					</ul>
+					
+					<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
 					
 					Furthermore, these <b>optional</b> values MAY be implemented:					
 					<ul>
 						<li><code>rdfxml</code> - RDF serialized as <a href="http://www.w3.org/TR/rdf-syntax-grammar/" target="_blank" >RDF/XML</a></li>
+						<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
 						<li><code>ntriples</code> - RDF serialized as <a href="http://www.w3.org/TR/n-triples" target="_blank" >N-Triples</a> </li>
 						<li><code>html</code> - HTML will be serialized using <a href="http://www.w3.org/TR/its20/" target="_blank">ITS 2.0 by W3C</a> </li>
 						<li><code>rdfa</code> - using RDFa. How this RDFa could look like is unknown and often not feasible. </li>
@@ -274,37 +275,37 @@ In order to produce an interoperable implementation the following checklist must
 						   <li>If the parameter is missing it MUST be substituted by a sensible default (e.g. the web service URI or a hash over the text or a UUID).</li>
 					   </ol>
 					   <h3>Examples</h3>
-					   <code>input</code> is "My dog likes eating sausage.";
+					   <code>input</code> is "My favourite actress is Natalie Portman.";
 					   <ul>
-						<li>Try it: <a href="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org%23" title="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org%23" target="_blank" >prefix=http://example.org%23</a></li>
+						<li>Try it: <a href="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20favourite%20actress%20is%20Natalie%20Portman.&amp;informat=text&amp;prefix=http://example.org%23" title="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20favourite%20actress%20is%20Natalie%20Portman.&amp;informat=text&amp;prefix=http://example.org%23" target="_blank" >prefix=http://example.org%23</a></li>
 					   </ul>
 <div class="example-code">
 <pre class="code" data-lllanguage="generic">
-&lt;http://example.org#char=0,28>
+&lt;http://example.org#char=0,40>
 		  &emsp; rdf:type nif:RFC5147String , nif:Context ;
 		  &emsp; nif:beginIndex "0" ;
-		  &emsp; nif:endIndex "28" ;
-		  &emsp; nif:isString "My dog likes eating sausage." .</pre></div>						
+		  &emsp; nif:endIndex "40" ;
+		  &emsp; nif:isString "My favourite actress is Natalie Portman." .</pre></div>						
 						<ul>
-						<li>Try it: <a href="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org/whatever/" title="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org/whatever/" target="_blank" >prefix=http://example.org/whatever/</a></li>
+						<li>Try it: <a href="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20favourite%20actress%20is%20Natalie%20Portman.&amp;informat=text&amp;prefix=http://example.org/whatever/" title="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20favourite%20actress%20is%20Natalie%20Portman.&amp;informat=text&amp;prefix=http://example.org/whatever/" target="_blank" >prefix=http://example.org/whatever/</a></li>
 					   </ul>					   
 <div class="example-code">
 <pre class="code" data-lllanguage="generic">
-&lt;http://example.org/whatever/char=0,28> 
+&lt;http://example.org/whatever/char=0,40> 
 				 &emsp; rdf:type nif:RFC5147String , nif:Context ;
 				 &emsp; nif:beginIndex "0" ;
-				 &emsp; nif:endIndex "28" ;
-				 &emsp; nif:isString "My dog likes eating sausage." .</pre></div>
+				 &emsp; nif:endIndex "40" ;
+				 &emsp; nif:isString "My favourite actress is Natalie Portman." .</pre></div>
 						<ul>
-						<li>Try it: <a href="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org/nif%3F" title="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text&amp;prefix=http://example.org/nif%3F" target="_blank" >prefix=http://example.org/nif%3F</a></li>
+						<li>Try it: <a href="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20favourite%20actress%20is%20Natalie%20Portman.&amp;informat=text&amp;prefix=http://example.org/nif%3F" title="http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20favourite%20actress%20is%20Natalie%20Portman.&amp;informat=text&amp;prefix=http://example.org/nif%3F" target="_blank" >prefix=http://example.org/nif%3F</a></li>
 					   </ul>
 					   <div class="example-code">
 <pre class="code" data-lllanguage="generic">
-&lt;http://example.org/nif?char=0,28> 
+&lt;http://example.org/nif?char=0,40> 
 				 &emsp; rdf:type nif:RFC5147String , nif:Context ;
 				 &emsp; nif:beginIndex "0" ;
-				 &emsp; nif:endIndex "28" ;
-				 &emsp; nif:isString "My dog likes eating sausage." .</pre>
+				 &emsp; nif:endIndex "40" ;
+				 &emsp; nif:isString "My favourite actress is Natalie Portman." .</pre>
 </div>
 					   
 				</td>
@@ -322,32 +323,32 @@ You can try out these examples, by downloading the NIF Stanford Core Release fro
 <h4>Example for converting text to NIF using Curl and GET</h4>
 <div class="example-code">
 <pre class="code" data-lllanguage="generic">
-curl "http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20dog%20likes%20eating%20sausage.&amp;informat=text"
+curl "http://nlp2rdf.lod2.eu/nif-ws.php?input=My%20favourite%20actress%20is%20Natalie%20Portman.&amp;informat=text"
 # or
-curl --data-urlencode input="My dog likes eating sausage." -d informat=text "http://nlp2rdf.lod2.eu/nif-ws.php"
+curl --data-urlencode input="My favourite actress is Natalie Portman." -d informat=text "http://nlp2rdf.lod2.eu/nif-ws.php"
 # using Accept:
-curl --data-urlencode input="My dog likes eating sausage." -H "Accept: text/plain" "http://nlp2rdf.lod2.eu/nif-ws.php"
+curl --data-urlencode input="My favourite actress is Natalie Portman." -H "Accept: text/plain" "http://nlp2rdf.lod2.eu/nif-ws.php"
 </pre></div>
 
 <h4>Example using Curl and POST</h4>
 <div class="example-code">
 <pre class="code" data-lllanguage="generic">
-curl -X POST --data-urlencode input="My dog likes eating sausage." -d informat=text "http://nlp2rdf.lod2.eu/nif-ws.php"
-curl -X POST --data-urlencode input="My dog likes eating sausage." -H "Accept: text/plain" "http://nlp2rdf.lod2.eu/nif-ws.php"
+curl -X POST --data-urlencode input="My favourite actress is Natalie Portman." -d informat=text "http://nlp2rdf.lod2.eu/nif-ws.php"
+curl -X POST --data-urlencode input="My favourite actress is Natalie Portman." -H "Accept: text/plain" "http://nlp2rdf.lod2.eu/nif-ws.php"
 </pre></div>
 
 <h4>Example using the <code>prefix</code> parameter</h4>
 <div class="example-code">
 <pre class="code" data-lllanguage="generic">
-curl --data-urlencode input="My dog likes eating sausage." -d informat=text \
+curl --data-urlencode input="My favourite actress is Natalie Portman." -d informat=text \
    --data-urlencode prefix="http://example.org/nif#" "http://nlp2rdf.lod2.eu/nif-ws.php"
-curl --data-urlencode input="My dog likes eating sausage." -d informat=text \
+curl --data-urlencode input="My favourite actress is Natalie Portman." -d informat=text \
    --data-urlencode prefix="http://example.org/nif/" "http://nlp2rdf.lod2.eu/nif-ws.php"
-curl --data-urlencode input="My dog likes eating sausage." -d informat=text \
+curl --data-urlencode input="My favourite actress is Natalie Portman." -d informat=text \
    --data-urlencode prefix="http://example.org/nif?" "http://nlp2rdf.lod2.eu/nif-ws.php"
-# using md5("My dog likes eating sausage.") = 8346e39e6020879eeb8776309fa7f32c as prefix
-curl --data-urlencode input="My dog likes eating sausage." -d informat=text \
-   --data-urlencode prefix="http://example.org/8346e39e6020879eeb8776309fa7f32c#" "http://nlp2rdf.lod2.eu/nif-ws.php"
+# using md5("My favourite actress is Natalie Portman.") = ae0aaa2ad528f072356827042afc6011 as prefix
+curl --data-urlencode input="My favourite actress is Natalie Portman." -d informat=text \
+   --data-urlencode prefix="http://example.org/ae0aaa2ad528f072356827042afc6011#" "http://nlp2rdf.lod2.eu/nif-ws.php"
 </pre></div>
 
 
@@ -357,17 +358,17 @@ curl --data-urlencode input="My dog likes eating sausage." -d informat=text \
 <pre class="code" data-lllanguage="generic">
 # -f or --informat specifies the format (text, turtle, rdfxml)
 # -t or --intype specifies the input type (direct, file, url) 
-echo "My dog also likes eating sausage." | java -jar stanfordNIF-beta.jar -f text -t direct
+echo -n "My favourite actress is Natalie Portman." | java -jar stanfordNIF-beta.jar -f text -t direct -i - 
 
 # -t can be omitted since direct is the default
-echo "My dog also likes eating sausage." | java -jar stanfordNIF-beta.jar -f text 
+echo -n "My favourite actress is Natalie Portman." | java -jar stanfordNIF-beta.jar -f text -i -
 </pre></div>
 <h4>Example for reading text from file</h4>
 <div class="example-code">
 <pre class="code" data-lllanguage="generic">
 # -t or --intype specifies the input type (direct, file, url) 
 # -i or --input specifies the input
-echo "My dog also likes eating sausage." > text.txt
+echo "My favourite actress is Natalie Portman." > text.txt
 java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 </pre></div>
 
@@ -435,6 +436,17 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			<h2>Additional parameters (informative)</h2>
 			
 			<table border="1" >
+			<tr>
+				<td class="c">
+					<code>port</code><br>(no short form)<br>
+				</td>
+				<td>
+				   <h3 id="port" class="param">Port Number</h3>
+					<ul>
+						<li><b><code>8899</code>(default)</b> - starts the NIF-WS at port 8899</li>
+					</ul>
+				</td>
+			</tr>   	
 			<tr>
 				<td class="c">
 					<code>info</code><br>(no short form)
