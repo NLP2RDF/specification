@@ -23,67 +23,80 @@
  <body>
 	<ol class="nav lang">
 	   <li><a href="/nlp2rdf/">Back to Overview</a></li>
-	  <li><a href="/nlp2rdf/specification/core.html">latest published version</a></li> 
-	  <li><a href="/nlp2rdf/specification/core/core-draft.html">latest draft</a></li> 
+	  <li><a href="/nlp2rdf/specification/stanbol.html">latest published version</a></li> 
+	  <li><a href="/nlp2rdf/specification/stanbol/stanbol-draft.html">latest draft</a></li> 
    </ol>
      <ol class="nav">
-     <li><a href="/nlp2rdf/specification/core/core-draft.html">v0.0.0-draft</a></li>
+     <li><a href="/nlp2rdf/specification/stanbol/stanbol-draft.html">v0.0.0-draft</a></li>
    </ol>
-   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>Core Specification</h1><h2>Document Version 0.0.0-draft (not versioned yet)</h2> 
+   <h2>NLP Interchange Format (NIF) 2.0</h2><h1>NIF Stanbol Profile Specification</h1><h2>Document Version 0.0.0-draft (not versioned yet)</h2> 
 <h2>Summary</h2>
 <p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software (<a href="http://persistence.uni-leipzig.org/nlp2rdf">overview</a>), which are combined under the version identifier "NIF 2.0", but are <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">versioned individually</a>.</p>
 
-<p>This document specifies the core of NIF, consisting of:</p>
+
+<p>This document is an extension of the <a href="/nlp2rdf/specification/core/core-draft.html">NIF 2.0 Core Specification</a>. As specified in the core document, NIF has three profiles: <code>Simple</code>, <code>Stanbol</code> and <code>OA</code>. The name originates from the <a href="http://stanbol.apache.org">Apache Stanbol project</a> who use a very similar formalism for their NLP tool output. This specification is a mixture of this work with NIF Simple. </p> 
+
+Additional features provided by the NIF 2.0 Stanbol Profile:
 <ul>
-<li>A conformance checklist telling you exactly what has to be implemented</li>
-<li>The initial conversion of text to NIF and how to assign URIs to Unicode Strings, so you can annotate them.</li>
-<li></li>
-<li></li>
-<li></li>
+	<li>Each annotation receives its own URI and can be annotated.</li>
+	<li>Alternative annotations (including confidence values).</li>
+	<li>Detailed provenance (each annotation is represented by an annotation URN that can keep provenance of the engine configuration).</li>
 </ul>
 
+<h2>Status</h2>
+<p>While the NIF Simple Profile is already very advanced, the NIF Stanbol profile is not yet written. The reason for this is not lack of feasability or uncertainty, but mainly lack of time. So this draft document will constantly update during the next months. Normally, we also like to produce  working software, before we write a detailed specification. As you will see below, the profile is a straightforward, no-brain extension of the NIF Simple Profile. Thanks to the great work of the Apache Stanbol project filling in the details is just a matter of convention and diligence. </p>
+ 
 
-<h2>Conformance checklist</h2>
-The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in <a href="http://www.ietf.org/rfc/rfc2119.txt" target="_blank" >RFC 2119</a>.
+<h2>NIF 2.0 Stanbol Profile Example</h2>
+
+<b>This is just a draft, but you can see that the vocab used in NIF Simple can be reused almost directly. </b>
+
 <div class="example-code">
 <pre class="code" data-lllanguage="generic">
-&lt;http://example.org#char=0,28>
-		  &emsp; rdf:type nif:RFC5147String , nif:Context ;
-		  &emsp; nif:beginIndex "0" ;
-		  &emsp; nif:endIndex "28" ;
-		  &emsp; nif:isString "My dog likes eating sausage." .</pre></div>			
-		  <div class="example-code">
-<pre data-lllanguage="generic" class="code" style="background-color:#141414;color:#ffffff;"><span style="color:#fee79e;" class="litelighterstyle">&lt;</span>http:<span style="color:#999" class="litelighterstyle">//example.org#char=0,28&gt;</span>
-          &emsp; rdf:type nif:RFC<span style="color:#CF6745;" class="litelighterstyle">5147</span>String , nif:Context ;
-          &emsp; nif:beginIndex <span style="color:#8F9657" class="litelighterstyle">"0"</span> ;
-          &emsp; nif:endIndex <span style="color:#8F9657" class="litelighterstyle">"28"</span> ;
-          &emsp; nif:isString <span style="color:#8F9657" class="litelighterstyle">"My dog likes eating sausage."</span> <span style="color:#fee79e;" class="litelighterstyle">.</span></pre></div>
 
-In order to produce an interoperable implementation the following checklist must be followed:
-<ol>
-<li>All text for NIF MUST be encoded using Unicode Normal Form C, especially if the text occurrs in RDF Literals.</li>
-<li>All NIF Implementations that expose their interfaces via web service or command line MUST implement the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html" >Public API Specification of NIF 2.0</a>.</li>
-</ol>
+nif:String rdfs:subclassOf nifs:Annotation .	
+	
+&lt;urn:uuid:context-aaa-aaa-aaa#char=0,40>
+        a                     nif:Context , nif:RFC5147String ;
+        nif:beginIndex        "0" ;
+        nif:endIndex          "40" ;
+        nif:isString          "My favourite actress is Natalie Portman." ;
+        nif:referenceContext  &lt;urn:uuid:context-aaa-aaa-aaa#char=0,40> .	
+        
+&lt;urn:uuid:context-aaa-aaa-aaa#char=13,20>
+        a                     nif:Word , nif:RFC5147String ;
+        #// new classes for these annotations:
+        a  nifs:TextAnnotation , nifs:Annotation ;
+        nif:anchorOf          "actress" ;
+        nif:beginIndex        "13" ;
+        nif:endIndex          "20" ;
+        nif:referenceContext  &lt;urn:uuid:context-aaa-aaa-aaa#char=0,40> ;
+        #// even tokenization can have provenance and confidence
+        nifs:tokConfidence "0.99"^^xsd:decimal ;
+        nifs:tokAnnotatorsRef &lt;urn:uuid:engine-deployment-time-bbb-bbb> .
 
-<h2>Creation</h2>
-<p>NIF is primarily used for text annotation. In order to enter the NIF and RDF world, your text must be converted to an RDF literal as an object of the nif:isString property:</p>
+#// provenance is kept
+&lt;urn:uuid:engine-deployment-time>  
+		rdfs:comment "OpenNLP Tokenizer and Entity Recognition version, date, etc ....." ;
+		nifs:webserviceURL &lt;http://nlp2rdf.lod2.eu/nif-ws.php> ;
+		nifs:extractionsDate "2013-09-22T15:08:44+02:00"^^xsd:dateTime .
 
-<div class="example-code"><pre class="code" data-lllanguage="generic">&lt;SubjectURI&gt; nif:isString "Your text, e.g. an article or a sentence; bascially any sequence of characters." .</pre></div>
+&lt;urn:uuid:annotation-bbb-bbb-bbb>
+		a nifs:Annotation .
+        nif:oliaCategory      olia:CommonNoun , olia:Noun ;
+        nif:oliaLink          &lt;http://purl.org/olia/penn.owl#NN> ;
+        nif:oliaConf      "0.99"^^xsd:decimal ;
+        nif:oliaAnnotatorsRef &lt;urn:uuid:engine-deployment-time-bbb-bbb> ;
+        nifs:extractedFrom    &lt;urn:uuid:context-aaa-aaa-aaa#char=13,20> .
+        
+&lt;urn:uuid:annotation-ccc-ccc-ccc>
+		a nifs:EntityAnnotation, nifs:Annotation .
+        itsrdf:taIdentRef        &lt;http://dbpedia.org/resource/Actor> ;
+        itsrdf:taAnnotatorsRef   &lt;urn:uuid:engine-deployment-time>  ;
+        itsrdf:taConfidence      "0.99"^^xsd:decimal ;
+        nifs:extractedFrom       &lt;urn:uuid:context-aaa-aaa-aaa#char=13,20> .
+</pre></div>			
 
-<p>
-According to the RDF specification (<a href="https://dvcs.w3.org/hg/rdf/raw-file/default/rdf-concepts/index.html#section-Graph-Literal">RDF 3.3 Literals</a>),  RDF literals are Unicode strings, which should be in Normal Form C. NIF is stricter and requires that any implementor must use Normal Form C. This is necessary as virtually all NLP tools depend on string length counts and order of code units of characters. 
-</p>
-
-<h2>Annotation</h2>
-<h2>Extension</h2>
-<h2>Validation</h2>
-Download the <a href="https://github.com/NLP2RDF/software#nif-validator">validator</a> and debug your tool. 
-(todo elaborate)
-
-<h2>Access</h2>
-Implement the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html">Public API Specification</a> for your NIF implementation. 
-
-<h2>Conformance</h2>
 
 
 <div id="about"></div>

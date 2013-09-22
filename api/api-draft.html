@@ -105,7 +105,7 @@ In order to produce an interoperable implementation the following checklist must
 	</ul>
 </li>
 
-<li>A NIF Implementation MAY implement optional parameters and values. In this case, the parameter <code>info</code> or <code>info=true</code> or <code>help</code>SHOULD say which parameters are implemented.</li>
+<li>A NIF Implementation MAY implement optional parameters and values. In this case, the parameter <code>info</code> or <code>info=true</code> or <code>help</code>  SHOULD say which parameters are implemented.</li>
 <li>NIF Implementations SHOULD implement the values <code>ntriples</code>, <code>rdfxml</code> for the parameter <code>informat</code> and <code>outformat</code>, if it does not require a lot of extra work (e.g built-in by the used RDF library).</li>
 <li>A NIF Implementation MUST not produce an error, if a parameter with an existing default value is omitted.</li>
 <li>A NIF Implementation MUST give an error message, if no <code>input</code> data is given.</li>
@@ -121,7 +121,11 @@ In order to produce an interoperable implementation the following checklist must
 	
 <h3>NIF-CLI: Additional requirements</h3>
 	<ol>
-		<li>If <code>intype</code> is <code>direct</code>, then NIF-CLI MUST read from <b>stdin</b>, thus <code>input</code> can be omitted.</li>
+		<li>If <code>intype</code> is <code>direct</code>, then NIF-CLI MUST either:
+		<ul>
+			<li>read the data from the parameter, e.g.<br> <code>--input "My favourite actress is NataliePortman" -f text</code></li>
+			<li>read from <b>stdin</b>, if <code>input</code> is just a "-" sign: <br><code>--input -</code> or <code>-i -</code></li>
+		</ul> 
 	</ol>
 
 
@@ -147,7 +151,8 @@ In order to produce an interoperable implementation the following checklist must
 					<b>Input Format</b> (see below) specifies in what format the retrieved data is (e.g. <code>text</code> or <code>turtle</code> or <code>json-ld</code>). 
 					NIF-CLI: If <code>intype</code> is <code>direct</code>, and input is "-", then NIF-CLI MUST read from stdin:
 					<div class="example-code">
-					<pre class="code" data-lllanguage="generic">echo -n "My favourite actress is Natalie Portman."  | java -jar nif-cli.jar --informat text -i - </pre>
+					<pre class="code" data-lllanguage="generic">echo -n "My favourite actress is Natalie Portman." |\
+  java -jar nif-cli.jar --informat text -i - </pre>
 					</div>
 					
 				</td>
@@ -166,12 +171,12 @@ In order to produce an interoperable implementation the following checklist must
 						<li><code>text</code> - plain text in UTF-8</li>
 					</ul>
 					
-					Note that <code>json-ld</code> is scheduled to be included, if enough implementations exist.
+					<b>Note that <code>json-ld</code> is scheduled to be included, if enough implementations exist.</b><br><br>
 					
 					Furthermore, these <b>optional</b> values MAY be implemented:
 					<ul>
-						<li><code>rdfxml</code> - RDF serialized as <a href="http://www.w3.org/TR/rdf-syntax-grammar/" target="_blank" >RDF/XML</a></li>
 						<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
+						<li><code>rdfxml</code> - RDF serialized as <a href="http://www.w3.org/TR/rdf-syntax-grammar/" target="_blank" >RDF/XML</a></li>
 						<li><code>ntriples</code> - RDF serialized as <a href="http://www.w3.org/TR/n-triples" target="_blank" >N-Triples</a> </li>
 						<li><code>html</code> - an HTML document</li>
 						<li><code>pdf</code> - a PDF document</li>
@@ -211,12 +216,12 @@ In order to produce an interoperable implementation the following checklist must
 						<li><code>text</code> - outputs the text in the isString properties for all contexts</li>
 					</ul>
 					
-					<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
+					<b>Note that <code>json-ld</code> is scheduled to be included, if enough implementations exist.</b><br><br>
 					
 					Furthermore, these <b>optional</b> values MAY be implemented:					
 					<ul>
-						<li><code>rdfxml</code> - RDF serialized as <a href="http://www.w3.org/TR/rdf-syntax-grammar/" target="_blank" >RDF/XML</a></li>
 						<li><code>json-ld</code> - RDF serialized as <a href="http://www.w3.org/TR/json-ld/" target="_blank" >JSON-LD</a> </li>
+						<li><code>rdfxml</code> - RDF serialized as <a href="http://www.w3.org/TR/rdf-syntax-grammar/" target="_blank" >RDF/XML</a></li>
 						<li><code>ntriples</code> - RDF serialized as <a href="http://www.w3.org/TR/n-triples" target="_blank" >N-Triples</a> </li>
 						<li><code>html</code> - HTML will be serialized using <a href="http://www.w3.org/TR/its20/" target="_blank">ITS 2.0 by W3C</a> </li>
 						<li><code>rdfa</code> - using RDFa. How this RDFa could look like is unknown and often not feasible. </li>
@@ -317,7 +322,7 @@ In order to produce an interoperable implementation the following checklist must
 
 <h2>Working NIF Implementation Examples</h2>
 
-You can try out these examples, by downloading the NIF Stanford Core Release from: <a href="http://nlp2rdf.lod2.eu/releases/" target="_blank" >http://nlp2rdf.lod2.eu/releases/</a> (<a href="https://github.com/NLP2RDF/software/blob/master/php/nif-ws.php" target="_blank">Source Code</a> ) or using our provided demo webservice at: <a href="http://nlp2rdf.lod2.eu/nif-ws.php" target="_blank" >http://nlp2rdf.lod2.eu/nif-ws.php</a>(<a href="https://github.com/NLP2RDF/software/tree/master/java-maven/implementation/stanford-core" target="_blank">Source Code</a>). 
+You can try out these examples, by downloading the NIF Stanford Core Release from: <a href="http://nlp2rdf.lod2.eu/releases/" target="_blank" >http://nlp2rdf.lod2.eu/releases/</a> (<a href="https://github.com/NLP2RDF/software/tree/master/java-maven/implementation/stanford-core" target="_blank">Source Code</a> ) or using our provided demo webservice at: <a href="http://nlp2rdf.lod2.eu/nif-ws.php" target="_blank" >http://nlp2rdf.lod2.eu/nif-ws.php</a>(<a href="https://github.com/NLP2RDF/software/blob/master/php/nif-ws.php" target="_blank">Source Code</a>). 
 
 <h3>NIF Web Service Examples</h3>
 <h4>Example for converting text to NIF using Curl and GET</h4>
@@ -394,7 +399,9 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			</ul> 
 			
 			<h2>HTTP Status Codes (Informative)</h2>	
+			(We have copied the HTTP Codes from <a href="https://ner.vse.cz/thd/docs/">https://ner.vse.cz/thd/docs/</a> for discussion. )
 			The NIF Implementation MAY return the following HTTP status codes:
+			
 			<table border=1>
 			<tr>
 				<td>Code</td>
