@@ -1,0 +1,22 @@
+# Quote 124 from David Lynch's Dune
+## English
+It is by will alone I set my mind in motion. 
+It is by the juice of sapho that thoughts acquire speed, the lips acquire stains, the stains become a warning. 
+It is by will alone I set my mind in motion.
+
+## German
+Allein durch meinen Willen setzt sich mein Geist in Bewegung und Sapho-Saft verleiht den Gedanken Geschwindigkeit. 
+Zur Warnung entstehen auf den Lippen Flecken. 
+Durch meinen Willen setzt sich mein Geist in Bewegung.
+
+# Featuring Unicode Characters 
+(not from the movie)
+
+## German characters
+äöüß
+
+## Korean Hangul
+훯 대 
+
+## Hindi
+हिन्दी

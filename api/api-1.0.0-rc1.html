@@ -37,8 +37,8 @@
 <h2>Summary</h2>
 <p>The NLP Interchange Format (NIF) is an RDF/OWL-based format that aims to achieve interoperability between Natural Language Processing (NLP) tools, language resources and annotations. NIF consists of specifications, ontologies and software (<a href="http://persistence.uni-leipzig.org/nlp2rdf">overview</a>), which are combined under the version identifier "NIF 2.0", but are <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/version.html">versioned individually</a>.</p>
 
-<p>This specification complements the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/core.html" >NIF 2.0 Core specification</a> by specifying in detail how the interface for a NIF Implementation must behave. The focus here is on <b>how to access the tools</b> and web services and  <b>not</b> on what the transfered data contains. We distinguish Web Service (NIF-WS) and Command Line Interface (NIF-CLI) which are called in sum NIF Implementations.
-Note that only the parameter <code>input</code> is required during a request. If this document mentions "required" parameters, it means that in order to be introperable with other NIF Implementations and clients, you are required to implement this parameter in your NIF Implementation. </p>
+<p>This specification complements the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/core.html" >NIF 2.0 Core specification</a> by specifying in detail how the interface for a NIF implementation must behave. The focus here is on <b>how to access the tools</b> and web services and  <b>not</b> on what the transfered data contains. We distinguish Web Service (NIF-WS) and Command Line Interface (NIF-CLI) which are called in sum NIF implementations.
+Note that only the parameter <code>input</code> is required during a request. If this document mentions "required" parameters, it means that in order to be introperable with other NIF implementations and clients, you are required to implement this parameter in your NIF implementation. </p>
 
 <p>Overall this specification contains:</p>
 <ul>
@@ -59,7 +59,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 
 In order to produce an interoperable implementation the following checklist must be followed:
 <ol>
-<li>A NIF Implementation MUST implement the given parameters (short and long, all values and the default):
+<li>A NIF implementation MUST implement the given parameters (short and long, all values and the default):
 	<ul>
 	<li><code>input</code> (<code>i</code>):
 		<ul>
@@ -97,7 +97,7 @@ In order to produce an interoperable implementation the following checklist must
 	</li>
 	<li><code>prefix</code> (<code>p</code>): free parameter; SHOULD implement a sensible default</li>
 	</ul>
-	A NIF Implementation MUST implement:
+	A NIF implementation MUST implement:
 	<ul>
 		<li>both the long form and the short form (in brackets)</li>
 		<li>ALL values given above values</li>
@@ -105,10 +105,10 @@ In order to produce an interoperable implementation the following checklist must
 	</ul>
 </li>
 
-<li>A NIF Implementation MAY implement optional parameters and values. In this case, the parameter <code>info</code> or <code>info=true</code> or <code>help</code>  SHOULD say which parameters are implemented.</li>
-<li>NIF Implementations SHOULD implement the values <code>ntriples</code>, <code>rdfxml</code> for the parameter <code>informat</code> and <code>outformat</code>, if it does not require a lot of extra work (e.g built-in by the used RDF library).</li>
-<li>A NIF Implementation MUST not produce an error, if a parameter with an existing default value is omitted.</li>
-<li>A NIF Implementation MUST give an error message, if no <code>input</code> data is given.</li>
+<li>A NIF implementation MAY implement optional parameters and values. In this case, the parameter <code>info</code> or <code>info=true</code> or <code>help</code>  SHOULD say which parameters are implemented.</li>
+<li>NIF implementations SHOULD implement the values <code>ntriples</code>, <code>rdfxml</code> for the parameter <code>informat</code> and <code>outformat</code>, if it does not require a lot of extra work (e.g built-in by the used RDF library).</li>
+<li>A NIF implementation MUST not produce an error, if a parameter with an existing default value is omitted.</li>
+<li>A NIF implementation MUST give an error message, if no <code>input</code> data is given.</li>
 </ol>
 
 <h3>NIF-WS: Additional requirements</h3>
@@ -237,7 +237,7 @@ In order to produce an interoperable implementation the following checklist must
 				</td>
 				<td>
 					<h3 id="urischeme" class="param">URI Scheme</h3>
-					The URI Scheme the NIF Implementation must use.
+					The URI Scheme the NIF implementation must use.
 					<ul>
 						<li><b><code>RFC5147String</code>(default)</b> - produces URIs of the form "<code>prefix</code>" + "char=x,y", where x is nif:beginIndex and y is nif:endIndex</li>
 						<li><code>CStringInst</code> - produces URIs of the form "<code>prefix</code>" + UUID</li>
@@ -260,7 +260,7 @@ In order to produce an interoperable implementation the following checklist must
 					</ul> 
 					
 					
-					A NIF Implementation MAY implement additional urischemes (e.g. their own). If they do so they MUST only accept the log form of this URI<br>
+					A NIF implementation MAY implement additional urischemes (e.g. their own). If they do so they MUST only accept the log form of this URI<br>
 				
 					
 				</td>
@@ -272,11 +272,11 @@ In order to produce an interoperable implementation the following checklist must
 				<td>
 					   <h3 id="prefix" class="param">Prefix</h3>
 						
-					   The prefix, which the NIF Implementation MUST use to create and parse URIs. 
+					   The prefix, which the NIF implementation MUST use to create and parse URIs. 
 					   <ol>
-						   <li>The NIF Implementation MUST create any new URIs using this <code>prefix</code>.</li>
-						   <li>If the prefix is given the NIF Implementation MUST use it to mint new URIs as-is, without any modification.</li>
-						   <li>The NIF Implementation MUST concatenate the prefix with the identifier produced based on the <code>urischeme</code> parameter.</li>
+						   <li>The NIF implementation MUST create any new URIs using this <code>prefix</code>.</li>
+						   <li>If the prefix is given the NIF implementation MUST use it to mint new URIs as-is, without any modification.</li>
+						   <li>The NIF implementation MUST concatenate the prefix with the identifier produced based on the <code>urischeme</code> parameter.</li>
 						   <li>If the parameter is missing it MUST be substituted by a sensible default (e.g. the web service URI or a hash over the text or a UUID).</li>
 					   </ol>
 					   <h3>Examples</h3>
@@ -320,7 +320,7 @@ In order to produce an interoperable implementation the following checklist must
 			
 			</table>
 
-<h2>Working NIF Implementation Examples</h2>
+<h2>Working NIF implementation Examples</h2>
 
 You can try out these examples, by downloading the NIF Stanford Core Release from: <a href="http://nlp2rdf.lod2.eu/releases/" target="_blank" >http://nlp2rdf.lod2.eu/releases/</a> (<a href="https://github.com/NLP2RDF/software/tree/master/java-maven/implementation/stanford-core" target="_blank">Source Code</a> ) or using our provided demo webservice at: <a href="http://nlp2rdf.lod2.eu/nif-ws.php" target="_blank" >http://nlp2rdf.lod2.eu/nif-ws.php</a>(<a href="https://github.com/NLP2RDF/software/blob/master/php/nif-ws.php" target="_blank">Source Code</a>). 
 
@@ -400,7 +400,7 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 			
 			<h2>HTTP Status Codes (Informative)</h2>	
 			(We have copied the HTTP Codes from <a href="https://ner.vse.cz/thd/docs/">https://ner.vse.cz/thd/docs/</a> for discussion. )
-			The NIF Implementation MAY return the following HTTP status codes:
+			The NIF implementation MAY return the following HTTP status codes:
 			
 			<table border=1>
 			<tr>
@@ -460,7 +460,7 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 				</td>
 				<td>
 					<h3 id="info" class="param">Info</h3>
-					If info=true the NIF Implementation SHOULD display all implemented parameters.
+					If info=true the NIF implementation SHOULD display all implemented parameters.
 					TODO this will be RDF as well in the future.
 					
 				</td>
@@ -474,7 +474,7 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 					
 					If access is limited, the client MUST use this parameter to give its authentication token or api key.
 					
-					<strong>Note:</strong> If your NIF Implementation doesn't require authentification, this parameter SHOULD be ignored. 
+					<strong>Note:</strong> If your NIF implementation doesn't require authentification, this parameter SHOULD be ignored. 
 				</td>
 			</tr>         	
 			<tr>
@@ -498,11 +498,11 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 				</td>
 				<td>
 				   <h3 id="config" class="param">Config</h3>
-					A string which can be used to configure the NIF Implementation.
+					A string which can be used to configure the NIF implementation.
 					<ul>
 					 <li>No required values are specified for this parameter.</li>
-					 <li>What exactly the NIF Implementation requires is left underspecified for now. Can be anything.</li>
-					 <li>If the NIF Implementation requires configuration, it MUST use this parameter.</li>
+					 <li>What exactly the NIF implementation requires is left underspecified for now. Can be anything.</li>
+					 <li>If the NIF implementation requires configuration, it MUST use this parameter.</li>
 					</ul>
 				</td>
 			</tr>
@@ -512,7 +512,7 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 				</td>
 				<td>
 				   <h3 id="configfile" class="param">Config File</h3>
-					A file which can be used to configure the NIF Implementation.
+					A file which can be used to configure the NIF implementation.
 					<ul>
 					 <li>No required values are specified for this parameter.</li>
 					 <li>Same as <code>config</code>, but it is loaded from file.</li>
@@ -542,7 +542,7 @@ java -jar stanfordNIF-beta.jar -f text -i text.txt -t file
 					</ul>
 					TODO this parameter is still informative. No implementation necessary. 
 					It is used to swtich between different complexity profiles.
-					NIF Implementation MAY accept values <code>simple</code>, <code>stanbol</code>, <code>oa</code>. </br>
+					NIF implementation MAY accept values <code>simple</code>, <code>stanbol</code>, <code>oa</code>. </br>
 				
 				</td>
 			</tr>

@@ -1,0 +1,41 @@
+Options -MultiViews
+
+AddType application/rdf+xml .rdf .owl
+AddType text/plain .ttl .txt
+AddType text/html .ttl .php
+AddCharset utf-8 .txt .log .ttl .php .rdf .owl
+
+RewriteEngine On
+
+
+##################
+# Rewrite rule if *.owl, .ttl or .ttl  files are requested
+##################
+RewriteRule \.(owl|rdf|html|ttl|nt|txt|md|png|php|html|json)$ - [L]
+
+##################
+# Rewrite rule to serve  text/plain content if requested
+##################
+RewriteCond %{HTTP_ACCEPT} text/plain
+RewriteRule ^(.*)$ $1.txt [R=303,L]
+
+RewriteCond %{HTTP_ACCEPT} text/html
+RewriteRule ^(.*)$ $1.php [R=303,L]
+
+RewriteCond %{HTTP_ACCEPT} text/turtle
+RewriteRule ^(.*)$ $1.ttl [R=303,L]
+
+RewriteCond %{HTTP_ACCEPT} application/rdf+xml
+RewriteRule ^(.*)$ $1.owl [R=303,L]
+
+RewriteCond %{HTTP_ACCEPT} application/ld+json
+RewriteRule ^(.*)$ $1.json [R=303,L]
+
+RewriteCond %{HTTP_ACCEPT} application/json
+RewriteRule ^(.*)$ $1.json [R=303,L]
+
+
+#################
+# Default here is turtle
+#################
+RewriteRule ^(.*)$ $1.ttl [R=303,L]

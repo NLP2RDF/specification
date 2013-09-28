@@ -37,51 +37,146 @@
 <ul>
 <li>A conformance checklist telling you exactly what has to be implemented</li>
 <li>The initial conversion of text to NIF and how to assign URIs to Unicode Strings, so you can annotate them.</li>
+<!--li></li>
 <li></li>
-<li></li>
-<li></li>
+<li></li-->
 </ul>
+
 
 
 <h2>Conformance checklist</h2>
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in <a href="http://www.ietf.org/rfc/rfc2119.txt" target="_blank" >RFC 2119</a>.
-<div class="example-code">
-<pre class="code" data-lllanguage="generic">
-&lt;http://example.org#char=0,28>
-		  &emsp; rdf:type nif:RFC5147String , nif:Context ;
-		  &emsp; nif:beginIndex "0" ;
-		  &emsp; nif:endIndex "28" ;
-		  &emsp; nif:isString "My dog likes eating sausage." .</pre></div>			
-		  <div class="example-code">
-<pre data-lllanguage="generic" class="code" style="background-color:#141414;color:#ffffff;"><span style="color:#fee79e;" class="litelighterstyle">&lt;</span>http:<span style="color:#999" class="litelighterstyle">//example.org#char=0,28&gt;</span>
-          &emsp; rdf:type nif:RFC<span style="color:#CF6745;" class="litelighterstyle">5147</span>String , nif:Context ;
-          &emsp; nif:beginIndex <span style="color:#8F9657" class="litelighterstyle">"0"</span> ;
-          &emsp; nif:endIndex <span style="color:#8F9657" class="litelighterstyle">"28"</span> ;
-          &emsp; nif:isString <span style="color:#8F9657" class="litelighterstyle">"My dog likes eating sausage."</span> <span style="color:#fee79e;" class="litelighterstyle">.</span></pre></div>
 
-In order to produce an interoperable implementation the following checklist must be followed:
+In order to produce an interoperable implementation the following checklist MUST be followed:
 <ol>
-<li>All text for NIF MUST be encoded using Unicode Normal Form C, especially if the text occurrs in RDF Literals.</li>
-<li>All NIF Implementations that expose their interfaces via web service or command line MUST implement the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html" >Public API Specification of NIF 2.0</a>.</li>
+	<li>All texts for NIF MUST be encoded using Unicode Normal Form C, especially if the text occurrs in RDF Literals.</li>
+	<li>All NIF implementations that expose their interfaces via web service or command line MUST implement the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html" >Public API Specification of NIF 2.0</a>.</li>
+	<li>All NIF implementations MUST validate their RDF output with the provided <a href="#validator">Validator</a></li>
 </ol>
 
+<h2 id="validator" >Validator</h2>
+<p>An up-to-date validator can be downloaded at <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/validate.jar">http://persistence.uni-leipzig.org/nlp2rdf/specification/validate.jar</a> (We will host an online version soon). The validator is the most important step to an interoperable NIF implementation. Implementors MUST validate their tool output with the validator. The validator itself is a valid NIF implementation and follows this specification as well as the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html">Public API Specification</a>.</p>
+
+<h3>Show version and help:</h3>
+<div class="example-code"><pre class="code" data-lllanguage="generic">./validate.jar -v  or  ./validate.jar -h</pre></div>	
+<h3>Validate NIF RDF in a Turtle file</h3>
+<div class="example-code"><pre class="code" data-lllanguage="generic">cat file.ttl | ./validate.jar -i - 
+#or
+./validate.jar -i file.ttl -t file</pre></div>	
+
+<h3>Validate a NIF Web Service:</h3>
+<div class="example-code"><pre class="code" data-lllanguage="generic">curl --data-urlencode input="My favourite actress is Natalie Portman." 
+  -d informat=text "http://nlp2rdf.lod2.eu/nif-ws.php" |\
+ ./validate.jar -i - --outformat text</pre></div>	
+
+Note that <code>-o text</code> or <code>--outformat text</code> gives you a human readable answer, while the default output is RDF using the <a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#">RLOG - RDF Logging Ontology</a>. More technical information is documented at the <a href="https://github.com/NLP2RDF/software#nif-validator">README</a>. The used SPARQL queries can be found here: <a href="http://persistence.uni-leipzig.org/nlp2rdf/ontologies/testcase/lib/nif-2.0-suite.ttl">http://persistence.uni-leipzig.org/nlp2rdf/ontologies/testcase/lib/nif-2.0-suite.ttl</a>
+
 <h2>Creation</h2>
-<p>NIF is primarily used for text annotation. In order to enter the NIF and RDF world, your text must be converted to an RDF literal as an object of the nif:isString property:</p>
+<p>NIF is primarily used for text annotation. In order to enter the NIF and RDF world, your text must be converted to an RDF literal as an object of the <code>nif:isString</code> property:</p>
 
-<div class="example-code"><pre class="code" data-lllanguage="generic">&lt;SubjectURI&gt; nif:isString "Your text, e.g. an article or a sentence; bascially any sequence of characters." .</pre></div>
+<div class="example-code"><pre class="code" data-lllanguage="generic">&lt;SubjectURI&gt; nif:isString "Your text, e.g. a single sentence or the content 
+	of a whole document; bascially any sequence of characters." .</pre></div>
 
-<p>
-According to the RDF specification (<a href="https://dvcs.w3.org/hg/rdf/raw-file/default/rdf-concepts/index.html#section-Graph-Literal">RDF 3.3 Literals</a>),  RDF literals are Unicode strings, which should be in Normal Form C. NIF is stricter and requires that any implementor must use Normal Form C. This is necessary as virtually all NLP tools depend on string length counts and order of code units of characters. 
+We will give a running example here on how text and annotations can be published as linked data. Given a published text available on the web (<a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/example/david_lynch_dune_quoteid_124.txt" title="http://persistence.uni-leipzig.org/nlp2rdf/specification/example/david_lynch_dune_quoteid_124.txt">URL</a>). For our example, we will use the the URI <code>http://persistence.uni-leipzig.org/nlp2rdf/specification/example/david_lynch_dune_quoteid_124</code> as non-information resource URI (a global identifier independent of the data and representation). Via content negotiation (HTTP "Accept:" header) you can receive several different versions of this URI:
+<ul>
+	<li><code>text/plain</code> 303-redirects to david_lynch_dune_quoteid_124.txt</li>
+	<li><code>text/html</code> 303-redirects to an HTML visualization: david_lynch_dune_quoteid_124.php</li>
+	<li><code>text/turtle</code> 303-redirects to RDF in Turtle: david_lynch_dune_quoteid_124.ttl</li>
+	<li><code>application/ld+json</code> or <code>application/json</code> 303-redirects to RDF in Json-LD: david_lynch_dune_quoteid_124.json</li>
+	<li><code>application/rdf+xml</code> 303-redirects to RDF in Json-LD: david_lynch_dune_quoteid_124.owl</li>
+</ul>
+
+Note that the turtle looks like this:
+<div class="example-code"><pre class="code" data-lllanguage="generic">
+&lt;http://persistence.uni-leipzig.org/nlp2rdf/specification/example/david_lynch_dune_quoteid_124#char=0,600> 
+	rdf:type nif:RFC5147String , nif:Context ;
+	nif:sourceUrl &lt;http://persistence.uni-leipzig.org/nlp2rdf/specification/example/david_lynch_dune_quoteid_124.txt>
+	nif:beginIndex "0" ;
+	nif:endIndex "600" ;
+	nif:isString """# Quote 124 from David Lynch's Dune	
+	... """ . </pre></div>
+
+The turtle file was create by this script (feel free to use the web service):
+
+<div class="example-code"><pre class="code" data-lllanguage="generic">wget http://persistence.uni-leipzig.org/nlp2rdf/specification/example/david_lynch_dune_quoteid_124.txt	
+curl --data-urlencode input@david_lynch_dune_quoteid_124.txt --data-urlencode prefix="http://persistence.uni-leipzig.org/nlp2rdf/specification/example/david_lynch_dune_quoteid_124#" -d informat=text  "http://nlp2rdf.lod2.eu/nif-ws.php" >  david_lynch_dune_quoteid_124.ttl	
+</pre></div>
+
+Furthermore, we provide the used <a href="" >.htaccess file in the GitHub repository</a> and an <a href="https://github.com/NLP2RDF/software/wiki/How-to-publish-a-txt-corpora-with-NIF-as-Linked-Data" >alternative tutorial in the Wiki</a>.
+And the used .htacess:
+<div class="example-code"><pre class="code" data-lllanguage="generic">wget http://persistence.uni-leipzig.org/nlp2rdf/specification/example/david_lynch_dune_quoteid_124.txt	
+curl --data-urlencode input@david_lynch_dune_quoteid_124.txt --data-urlencode prefix="http://persistence.uni-leipzig.org/nlp2rdf/specification/example/david_lynch_dune_quoteid_124#" -d informat=text  "http://nlp2rdf.lod2.eu/nif-ws.php" >  david_lynch_dune_quoteid_124.ttl	
+</pre></div>
+	
+	
+<h3>String counting and offsets</h3>
+NIF builds on the current best practices for counting strings and creating offsets
+
+
+http://tools.ietf.org/html/rfc5147#section-2
+	
+<h3>Unicode Normalization Forms, Encoding </h3>	
+<p>According to the RDF 1.1 specification (<a href="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal">3.3 Literals</a>),  RDF literals are Unicode strings, which should be in <a href="http://unicode.org/reports/tr15/#Norm_Forms">Normal Form C (NFC)</a>. 
+In NIF we will follow this recommendation in general. There are, however, reasons which require the use of Normal Form D (NFD).</p>
+One such reason, is if a linguistic annotator has a requirement to annotate individual diacritics or parts of precomposed syllables. For linguistics with this use case or applicable languages, this is obvious. We will only give examples here and refer the interested
+reader to these three documents: <a target="_blank" href="http://gernot-katzers-spice-pages.com/var/korean_hangul_unicode.html#">Gernot Katzer's page about the Korean Writing system</a>,  <a target="_blank" href="https://en.wikipedia.org/wiki/Hangul">Wikipedia article about the Korean Hangul</a>, <a target="_blank" href="http://unicode.org/reports/tr15/#Norm_Forms">Unicode Normal Form spec</a></p>
+
+Example 1 
+<div class="example-code"><pre class="code" data-lllanguage="generic">
+Precomposed Hangul 훯, three conjoining Jamo (<SPAN class=lead>H</SPAN>+<SPAN class=vowel>WEO</SPAN>+<SPAN class=tail>LH</SPAN>) 훯,
+the same three Jamo enclosed in some markup to prevent their joining 
+<SPAN class=lead style="margin:0 0.2em">&#x1112;</SPAN><SPAN class=vowel style="margin:0 0.2em">&#x116F;</SPAN> <SPAN class=tail style="margin:0 0.2em">&#x11B6;</SPAN> and three Compatibility Jamo  ㅎㅝㅀ.  
+Ideally, only the first two should render identically as compound Hangul. 
+</pre></div>
+
+<div class="example-code"><pre class="code" data-lllanguage="generic">
+Precomposed Hangul 훯, three conjoining Jamo (<SPAN class=lead>H</SPAN>+<SPAN class=vowel>WEO</SPAN>+<SPAN class=tail>LH</SPAN>) 훯,
+the same three Jamo enclosed in some markup to prevent their joining 
+<SPAN class=lead style="margin:0 0.2em">&#x1112;</SPAN><SPAN class=vowel style="margin:0 0.2em">&#x116F;</SPAN> <SPAN class=tail style="margin:0 0.2em">&#x11B6;</SPAN> and three Compatibility Jamo  ㅎㅝㅀ.  
+Ideally, only the first two should render identically as compound Hangul. 
+</pre></div>
+
+
+<p> Since NIF implementations accept primary data (text, html, etc.) as well as primary data wrapped as RDF Literal (see <code>nif:isString</code> above). We specify three cases here:
 </p>
 
+<h4>Input as RDF Literal</h4>
+<p>A NIF implementation MUST accept RDF Literals in Unicode NFC and assume that this is the default.  
+NIF thinks it is the clients responsibility to provide proper encoding. A NIF implementation MAY issue a warning for non-unicode, non-normalized text. 
+
+If the implementation encounters NFD, it MUST not re-encode it. If text or other primary data such as HTML is given directly to the implementation (i.e. not wrapped as RDF Literal) 
+
+</p>
+Your tool MAY accept 
+
+<p>We are investigating on how to count strings at the moment.</p>
+
+
+<!--NIF is stricter and requires that any implementor MUST use Normal Form C. This is necessary as virtually all NLP tools depend on string length counts and order of characters. In NIF all characters are counted via Unicode Code Points. This is the "usual" way of counting strings and is congruent to the PHP <a href="http://www.php.net/manual/en/function.strlen.php">strlen()</a> or the Java <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html#length%28%29">length()</a> function.
+NIF does not specify an encoding, UTF-8,  UTF-16 or  UTF-32 MAY be used (Note that UTF-16 code units are roughly counted in a similar manner than code points).</p>-->
+<h3>Context</h3>
+
+<div class="example-code"><pre class="code" data-lllanguage="generic">&lt;http://example.com/demo?cid=83848#char=0,40> 
+	  rdf:type nif:RFC5147String , nif:Context ;
+	  nif:beginIndex "0" ;
+	  nif:endIndex "40" ;
+	  nif:isString "My favourite actress is Natalie Portman." .</pre></div>
+
+
 <h2>Annotation</h2>
+
+
 <h2>Extension</h2>
 <h2>Validation</h2>
+NIF requires that you MUST validate your tool output and your API parameters. Therefore the NLP2RDF project provides a validation software, which can be downloaded as a 
+<a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/validate.jar">Java Jar File</a>. In the future, a web service with an HTML interface will be provided. 
+
+
 Download the <a href="https://github.com/NLP2RDF/software#nif-validator">validator</a> and debug your tool. 
 (todo elaborate)
 
 <h2>Access</h2>
-Implement the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html">Public API Specification</a> for your NIF implementation. 
+NIF requires that implementers MUST follow the <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/api.html">Public API Specification</a> for your NIF implementation. 
 
 <h2>Conformance</h2>
 

@@ -1,0 +1,38 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix rlog: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+<http://persistence.uni-leipzig.org/nlp2rdf/specification/example/david_lynch_dune_quoteid_124#char=0,600> rdf:type nif:RFC5147String ,
+                                                                                                                    nif:Context ;
+                                                                                                           nif:beginIndex "0" ;
+                                                                                                           nif:endIndex "600" ;
+                                                                                                           nif:isString """# Quote 124 from David Lynch's Dune
+## English
+It is by will alone I set my mind in motion. 
+It is by the juice of sapho that thoughts acquire speed, the lips acquire stains, the stains become a warning. 
+It is by will alone I set my mind in motion.
+
+## German
+Allein durch meinen Willen setzt sich mein Geist in Bewegung und Sapho-Saft verleiht den Gedanken Geschwindigkeit. 
+Zur Warnung entstehen auf den Lippen Flecken. 
+Durch meinen Willen setzt sich mein Geist in Bewegung.
+
+# Featuring Unicode Characters 
+(not from the movie)
+
+## German characters
+äöüß
+
+## Korean Hangul
+훯 대 
+
+## Hindi
+हिन्दी
+""" .
+
+<urn:php:5246d0934f8223.64073747> rlog:level <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#DEBUG> ;
+                                  rlog:message "Converted text to NIF. Retrieved/created 5 triples. Created 0 new triple(s). Used 2.17mb max memory. Needed 0.05ms" ;
+                                  dc:creator "http://nlp2rdf.lod2.eu/nif-ws.php" ;
+                                  rdf:type rlog:Entry ;
+                                  nif:date "2013-09-28T14:50:27+02:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
