@@ -1,9 +1,14 @@
 Options -MultiViews
 
-AddType application/rdf+xml .rdf .owl
-AddType text/plain .ttl .txt
-AddType text/html .ttl .php
-AddCharset utf-8 .txt .log .ttl .php .rdf .owl
+AddDefaultCharset UTF-8
+
+AddType text/html .php
+AddType text/plain .txt
+
+AddType 'text/turtle; charset=UTF-8' .ttl
+AddType 'application/rdf+xml; charset=UTF-8' .rdf .owl
+AddType 'application/ld+json; charset=UTF-8' .json
+
 
 RewriteEngine On
 
@@ -17,25 +22,25 @@ RewriteRule \.(owl|rdf|html|ttl|nt|txt|md|png|php|html|json)$ - [L]
 # Rewrite rule to serve  text/plain content if requested
 ##################
 RewriteCond %{HTTP_ACCEPT} text/plain
-RewriteRule ^(.*)$ $1.txt [R=303,L]
+RewriteRule ^(.*)$ /nlp2rdf/specification/example/$1.txt [R=303,L]
 
 RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(.*)$ $1.php [R=303,L]
+RewriteRule ^(.*)$ /nlp2rdf/specification/example/$1.php [R=303,L]
 
 RewriteCond %{HTTP_ACCEPT} text/turtle
-RewriteRule ^(.*)$ $1.ttl [R=303,L]
+RewriteRule ^(.*)$ /nlp2rdf/specification/example/$1.ttl [R=303,L]
 
-RewriteCond %{HTTP_ACCEPT} application/rdf+xml
-RewriteRule ^(.*)$ $1.owl [R=303,L]
+RewriteCond %{HTTP_ACCEPT} application/rdf\+xml
+RewriteRule ^(.*)$ /nlp2rdf/specification/example/$1.rdf [R=303,L]
 
-RewriteCond %{HTTP_ACCEPT} application/ld+json
-RewriteRule ^(.*)$ $1.json [R=303,L]
+RewriteCond %{HTTP_ACCEPT} application/ld\+json
+RewriteRule ^(.*)$ /nlp2rdf/specification/example/$1.json [R=303,L]
 
 RewriteCond %{HTTP_ACCEPT} application/json
-RewriteRule ^(.*)$ $1.json [R=303,L]
+RewriteRule ^(.*)$ /nlp2rdf/specification/example/$1.json [R=303,L]
 
 
 #################
 # Default here is turtle
 #################
-RewriteRule ^(.*)$ $1.ttl [R=303,L]
+RewriteRule (.*)$ /nlp2rdf/specification/example/$1.ttl [R=303,L]

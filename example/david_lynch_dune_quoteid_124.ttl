@@ -31,8 +31,8 @@ Durch meinen Willen setzt sich mein Geist in Bewegung.
 हिन्दी
 """ .
 
-<urn:php:5246d0934f8223.64073747> rlog:level <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#DEBUG> ;
+<urn:php:5246fb6e661e51.14639725> rlog:level <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/rlog#DEBUG> ;
                                   rlog:message "Converted text to NIF. Retrieved/created 5 triples. Created 0 new triple(s). Used 2.17mb max memory. Needed 0.05ms" ;
                                   dc:creator "http://nlp2rdf.lod2.eu/nif-ws.php" ;
                                   rdf:type rlog:Entry ;
-                                  nif:date "2013-09-28T14:50:27+02:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+                                  nif:date "2013-09-28T17:53:18+02:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
