@@ -201,7 +201,7 @@ NIF does not specify an encoding, UTF-8,  UTF-16 or  UTF-32 MAY be used (Note th
 In NIF, we consider the definition of "document" as highly problematic and not practical for NLP purposes. As soon as we start using the term "document" we are suddently facing many modelling problems, which are only of minor interest for NLP. The biggest modelling problems are the well-known "Theseus's paradox" problem of abstract identity as well as versioning, retrieval, authorship, etc. We would like to state some pertinent examples here:
 <ul>
 	<li><b>Theseus's paradox</b>: Tim Berners-Lee web publication about <a href="http://www.w3.org/DesignIssues/LinkedData.html">Design Issues for Linked Data</a> was edited several times since it's creation, but always published under the same URL. For each change, an NLP engine would receive different textual input, but the document URI would remain the same.</li>
-	<li><b>Authorship</b>: The Wikipedia page of <a href="https://en.wikipedia.org/wiki/George_W._Bush">George W. Bush</a> has been edited over 45 thousand times. Who is the author of the document? What about user contributions that were deleted (e.g. due to vandalism)? What about the software developer who created the boilerplate HTML such as the navigation bar? Note that authorship on the content-level is much easier to trace.<li>
+	<li><b>Authorship</b>: The Wikipedia page of <a href="https://en.wikipedia.org/wiki/George_W._Bush">George W. Bush</a> has been edited over 45 thousand times. Who is the author of the document? What about user contributions that were deleted (e.g. due to vandalism)? What about the software developer who created the boilerplate HTML such as the navigation bar? Note that authorship on the content-level is much easier to trace.</li>
     <li><b>Equivalence of redundant documents</b>: When the content of a document is copied to another URL, both exist in parallel. The content of the document is obviously the same and an NLP engine will (given it is deterministic) produce the same annotations. We are easily able to determine content equality via a string comparison, however, judging whether the documents are equivalent is difficult. The new document has a different URI, was copied there by an activity and therefore has many other properties which are different such as the HTTP headers upon a retrieval action (last-modified, e-tag). Identity according to Leibniz can not be assumed automatically, but requires an explicit statement.  </li>
 </ul>
 
@@ -213,12 +213,18 @@ In NIF, we consider the definition of "document" as highly problematic and not p
 
 <h2>URI Schemes</h2>
 
-<h2>Common Annotations</h2>
+Please see: <a href="http://jens-lehmann.org/files/2012/ekaw_nif.pdf">Linked-Data Aware URI Schemes for Referencing Text Fragments</a>.
+Sebastian Hellmann, Jens Lehmann, and Sören Auer. EKAW, volume 7603 of Lecture Notes in Computer Science, page 175-184. Springer, (2012)
 
+<h2>Common Annotations</h2>
+Please see: <a href="http://svn.aksw.org/papers/2012/PeoplesWeb/public_preprint.pdf‎">Towards Web-Scale Collaborative Knowledge Extraction</a>, Sebastian Hellmann, and Sören Auer. The People's Web Meets NLP, Springer Berlin Heidelberg, (2013),  page 21 .
 
 <h2>How to extend NIF</h2>
+Please see: <a href="http://svn.aksw.org/papers/2012/PeoplesWeb/public_preprint.pdf‎">Towards Web-Scale Collaborative Knowledge Extraction</a>, Sebastian Hellmann, and Sören Auer. The People's Web Meets NLP, Springer Berlin Heidelberg, (2013),  page 21 .
 
-<h1>Existing Extensions (Vocabulary Modules)</h1>
+<h1>Existing Extensions<br>(Vocabulary Modules)</h1>
+
+
 <h2>Validation</h2>
 NIF requires that you MUST validate your tool output and your API parameters. Therefore the NLP2RDF project provides a validation software, which can be downloaded as a 
 <a href="http://persistence.uni-leipzig.org/nlp2rdf/specification/validate.jar">Java Jar File</a>. In the future, a web service with an HTML interface will be provided. 
